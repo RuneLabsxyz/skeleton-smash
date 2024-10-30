@@ -13,5 +13,6 @@ move = "./scripts/move.sh"
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.19" }
+origami_map = { git = "https://github.com/dojoengine/origami" }
 
 [[target.dojo]]
