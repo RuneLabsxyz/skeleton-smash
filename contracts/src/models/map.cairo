@@ -38,7 +38,7 @@ struct Room {
     room_id: u32,
     map: felt252,
     level: u32,
-    player_ids: Array<u32>, // List of player ids in the room. At 5 players the room is killed
+    player_ids: Array<ContractAddress>, // List of player ids in the room. At 5 players the room is killed
 }
 
 #[generate_trait]
@@ -52,6 +52,19 @@ impl RoomImpl of RoomTrait {
     }
     fn does_room_exist(ref self: Room) -> bool {
         self.map != 0
+    }
+    fn add_player(ref self: Room, player_id: ContractAddress) -> Room {
+        let mut player_ids = ArrayTrait::new();
+        let mut i = 0;
+        loop {
+            if i == self.player_ids.len() {
+                break;
+            }
+            player_ids.append(*self.player_ids.at(i));
+            i += 1;
+        };
+        player_ids.append(player_id);
+        Room { room_id: self.room_id, map: self.map, level: self.level, player_ids }
     }
 }
 
