@@ -15,6 +15,7 @@ mod actions {
     use skeleton_smash::models::map::{RoomList, RoomListTrait, Room, RoomTrait};
     use skeleton_smash::helpers::move::{move_player};
     use skeleton_smash::types::direction::Direction;
+    use skeleton_smash::helpers::bitmap::{set_player_bitmap, clear_player_bitmap};
 
 
     #[abi(embed_v0)]
@@ -64,17 +65,20 @@ mod actions {
         fn move_player(ref world: IWorldDispatcher, direction: Direction) {
             let contract_address = get_caller_address();
             let player = get!(world, contract_address, (Player));
-            let room = get!(world, player.run_id, (Room));
+            let mut room = get!(world, player.run_id, (Room));
             let mut position = get!(world, player.run_id, (Position));
             let mut run = get!(world, player.run_id, (Run));
 
             assert(position.pos != 0, 'Invalid position');
 
+            //update player bitmap and move player
+            room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
             position.pos = move_player(direction, room.map, room.player_positions, position.pos);
+            room.player_positions = set_player_bitmap(room.player_positions, position.pos);
 
             run.move_count += 1;
 
-            set!(world, (position, run));
+            set!(world, (position, run, room));
         }
     }
 }
