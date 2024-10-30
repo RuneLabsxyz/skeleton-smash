@@ -18,5 +18,7 @@
             {/each}
         </div>
     {/each}
-    <div class="h-8 bg-gray-200"></div>
+    <div class="h-8 bg-gray-200 flex items-center justify-center">
+        SAFE ZONE
+    </div>
 </div>
