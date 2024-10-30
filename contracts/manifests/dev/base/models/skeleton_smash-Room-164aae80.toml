@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x4836bba7ffc627401f58a8a51a1b94fd5807c2ef56ec2744670e347112e3dec"
-original_class_hash = "0x4836bba7ffc627401f58a8a51a1b94fd5807c2ef56ec2744670e347112e3dec"
+class_hash = "0x6bf422593059150b234bb6ec3ae46cdbd906fbc2bdcb5464a3a42716a44679"
+original_class_hash = "0x6bf422593059150b234bb6ec3ae46cdbd906fbc2bdcb5464a3a42716a44679"
 abi = "manifests/dev/base/abis/models/skeleton_smash-Room-164aae80.json"
 tag = "skeleton_smash-Room"
 qualified_path = "skeleton_smash::models::map::room"
@@ -13,6 +13,11 @@ key = true
 
 [[members]]
 name = "map"
+type = "felt252"
+key = false
+
+[[members]]
+name = "player_positions"
 type = "felt252"
 key = false
 
