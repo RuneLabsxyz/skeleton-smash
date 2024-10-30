@@ -15,8 +15,15 @@ struct Run {
     #[key]
     run_id: u32,
     player: ContractAddress, 
-    level: u32, // current level 
-    moves: u32, // remaining moves for that level
+    level: u32, // current level
+    move_count: u32, // remaining moves for that level
+}
+
+#[generate_trait]
+impl RunImpl of RunTrait {
+    fn new(run_id: u32, player: ContractAddress, level: u32) -> Run {
+        Run { run_id, player, level, move_count: 0 }
+    }
 }
 
 #[derive(Drop, Copy, Serde)]
