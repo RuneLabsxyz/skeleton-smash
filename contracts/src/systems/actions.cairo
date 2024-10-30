@@ -32,25 +32,28 @@ mod actions {
 
             // Get the room list and current room
             let mut room_list = get!(world, 0, (RoomList));
-            let room_id = *room_list.room_max_id_for_level[0];
+            let mut room_id = *room_list.room_max_id_for_level[0];
             let mut room = get!(world, room_id, (Room));
 
             // If current room is full, create a new one
             if RoomTrait::is_full(ref room) {
                 // Increment the room id for level 0
-                let room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0);
+                room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0);
                 // Create new room with the new id
-                let new_room_id = *room_list.room_max_id_for_level[0];
-                let new_room = RoomTrait::new(new_room_id, seed, 0);
+                room_id = *room_list.room_max_id_for_level[0];
+                room = RoomTrait::new(room_id, seed, 0);
                 
                 // Set both the updated room list and new room
-                set!(world, (room_list, new_room));
-                room = new_room;
             }
+
 
             // TODO: Add player to room's player_ids
             // TODO: Create new run for player
             // TODO: Set player position in the room
+
+            room = RoomTrait::add_player(ref room, contract_address);
+
+            set!(world, (room_list, room));
         }
     }
 }
