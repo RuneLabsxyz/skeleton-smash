@@ -1,6 +1,6 @@
 kind = "DojoContract"
-class_hash = "0x217752ac5ca2918d06f6ce7c5c34a7d022f66cfba2a858cc5b5b18afc16cd53"
-original_class_hash = "0x217752ac5ca2918d06f6ce7c5c34a7d022f66cfba2a858cc5b5b18afc16cd53"
+class_hash = "0x37d2a95e29eaa9d8621847799ca0d5f3214d2df598df1087a671f84f927016d"
+original_class_hash = "0x37d2a95e29eaa9d8621847799ca0d5f3214d2df598df1087a671f84f927016d"
 base_class_hash = "0x0"
 abi = "manifests/dev/base/abis/contracts/skeleton_smash-actions-7ca74759.json"
 reads = []
@@ -10,5 +10,6 @@ tag = "skeleton_smash-actions"
 systems = [
     "initialize",
     "spawn",
+    "move_player",
 ]
 manifest_name = "skeleton_smash-actions-7ca74759"

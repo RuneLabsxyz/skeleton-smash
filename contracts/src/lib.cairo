@@ -9,3 +9,11 @@ mod models {
 
 mod tests {
 }
+
+mod helpers {
+    mod move;
+}
+
+mod types {
+    mod direction;
+}

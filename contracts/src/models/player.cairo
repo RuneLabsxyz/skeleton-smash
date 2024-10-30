@@ -39,6 +39,6 @@ impl RunImpl of RunTrait {
 struct Position {
     #[key]
     run_id: u32,
-    pos: felt252,
+    pos: u8,
 }
  
