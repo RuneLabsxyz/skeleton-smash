@@ -7,8 +7,14 @@ version = "1.0.0-alpha.4"
 source = "git+https://github.com/dojoengine/dojo?tag=v1.0.0-alpha.19#ef696ea9bbaa22d3f6db392d9692b4821578c23c"
 
 [[package]]
+name = "origami_map"
+version = "1.0.0-alpha.19"
+source = "git+https://github.com/dojoengine/origami#89172a1dcb6992763369df732e17e2368e2324bd"
+
+[[package]]
 name = "skeleton_smash"
 version = "0.1.0"
 dependencies = [
  "dojo",
+ "origami_map",
 ]
