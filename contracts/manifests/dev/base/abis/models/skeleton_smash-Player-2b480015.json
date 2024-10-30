@@ -371,7 +371,7 @@
     "name": "skeleton_smash::models::player::Player",
     "members": [
       {
-        "name": "player",
+        "name": "contract_address",
         "type": "core::starknet::contract_address::ContractAddress"
       },
       {

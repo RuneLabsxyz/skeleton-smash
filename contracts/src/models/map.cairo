@@ -13,7 +13,7 @@ struct RoomList {
 impl RoomListImpl of RoomListTrait {
     /// Increments the maximum room ID for a specific level in the RoomList.
     /// Used when a new room is created for a particular level to keep track of room IDs.
-    fn increment_max_room_id_for_level(ref self: RoomList, level: u32) {
+    fn increment_max_room_id_for_level(ref self: RoomList, level: u32) -> RoomList {
         let mut room_max_id_for_level = ArrayTrait::new();
         let mut i = 0;
         loop {
@@ -27,7 +27,7 @@ impl RoomListImpl of RoomListTrait {
             }
             i += 1;
         };
-        self.room_max_id_for_level = room_max_id_for_level;
+        RoomList { id: self.id, room_max_id_for_level }
     }
 }
 
@@ -38,7 +38,7 @@ struct Room {
     room_id: u32,
     map: felt252,
     level: u32,
-    player_ids: Array<u32>, // List of player ids in the room, capped at 5 The room is killed
+    player_ids: Array<u32>, // List of player ids in the room. At 5 players the room is killed
 }
 
 #[generate_trait]
@@ -46,6 +46,12 @@ impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
         let cave_map = MapTrait::new_cave(14, 18, 3, seed);
         Room { room_id, map: cave_map.grid, level, player_ids: ArrayTrait::new() }
+    }
+    fn is_full(ref self: Room) -> bool {
+        self.player_ids.len() == 5
+    }
+    fn does_room_exist(ref self: Room) -> bool {
+        self.map != 0
     }
 }
 

@@ -3,7 +3,6 @@ mod systems {
 }
 
 mod models {
-    mod setup;
     mod player;
     mod map;
 }
