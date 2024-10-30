@@ -37,6 +37,7 @@ struct Room {
     #[key]
     room_id: u32,
     map: felt252,
+    player_positions: felt252,
     level: u32,
     player_ids: Array<ContractAddress>, // List of player ids in the room. At 5 players the room is killed
 }
@@ -45,7 +46,7 @@ struct Room {
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
         let cave_map = MapTrait::new_cave(14, 18, 3, seed);
-        Room { room_id, map: cave_map.grid, level, player_ids: ArrayTrait::new() }
+        Room { room_id, map: cave_map.grid, player_positions: 0, level, player_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
         self.player_ids.len() == 5
@@ -64,7 +65,7 @@ impl RoomImpl of RoomTrait {
             i += 1;
         };
         player_ids.append(player_id);
-        Room { room_id: self.room_id, map: self.map, level: self.level, player_ids }
+        Room { room_id: self.room_id, map: self.map, player_positions: self.player_positions, level: self.level, player_ids }
     }
 }
 
