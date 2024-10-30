@@ -1,0 +1,27 @@
+kind = "DojoModel"
+class_hash = "0x28545d3a2195672f3d8a63ccdd76a440fdfff196faffcd4c82ff77bb1606919"
+original_class_hash = "0x28545d3a2195672f3d8a63ccdd76a440fdfff196faffcd4c82ff77bb1606919"
+abi = "manifests/dev/base/abis/models/skeleton_smash-Moves-40fd8284.json"
+tag = "skeleton_smash-Moves"
+qualified_path = "skeleton_smash::models::moves"
+manifest_name = "skeleton_smash-Moves-40fd8284"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "remaining"
+type = "u8"
+key = false
+
+[[members]]
+name = "last_direction"
+type = "Direction"
+key = false
+
+[[members]]
+name = "can_move"
+type = "bool"
+key = false
