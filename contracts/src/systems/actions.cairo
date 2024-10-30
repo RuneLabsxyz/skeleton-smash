@@ -9,7 +9,7 @@ trait IActions {
 mod actions {
     use super::IActions;
     use starknet::{ContractAddress, get_caller_address};
-    use skeleton_smash::models::player::{Player, Position, Vec2};
+    use skeleton_smash::models::player::{Player, Run, RunTrait, Position, Vec2};
     use skeleton_smash::models::map::{RoomList, RoomListTrait, Room, RoomTrait};
 
 
@@ -46,14 +46,15 @@ mod actions {
                 // Set both the updated room list and new room
             }
 
-
-            // TODO: Add player to room's player_ids
             // TODO: Create new run for player
             // TODO: Set player position in the room
 
             room = RoomTrait::add_player(ref room, contract_address);
+            let run_id = world.uuid();
+            let run = RunTrait::new(run_id, contract_address, 0);
 
-            set!(world, (room_list, room));
+
+            set!(world, (room_list, room, run));
         }
     }
 }
