@@ -4,7 +4,7 @@ use starknet::ContractAddress;
 #[dojo::model]
 struct Player {
     #[key]
-    player: ContractAddress,
+    contract_address: ContractAddress,
     run_id: u32, // if 0, the player is not in a run
     run_history: Array<u32>, // history of run ids
 }   
