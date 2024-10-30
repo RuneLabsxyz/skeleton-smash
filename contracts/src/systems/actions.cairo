@@ -1,9 +1,10 @@
-// define the interface
+use skeleton_smash::types::direction::Direction;
+
 #[dojo::interface]
 trait IActions {
     fn spawn(ref world: IWorldDispatcher, seed: felt252);
     fn initialize(ref world: IWorldDispatcher);
-    fn move_player(ref world: IWorldDispatcher, direction: felt252);
+    fn move_player(ref world: IWorldDispatcher, direction: Direction);
 }
 
 #[dojo::contract]
@@ -12,6 +13,8 @@ mod actions {
     use starknet::{ContractAddress, get_caller_address};
     use skeleton_smash::models::player::{Player, Run, RunTrait, Position, PlayerTrait};
     use skeleton_smash::models::map::{RoomList, RoomListTrait, Room, RoomTrait};
+    use skeleton_smash::helpers::move::{move_player};
+    use skeleton_smash::types::direction::Direction;
 
 
     #[abi(embed_v0)]
@@ -58,17 +61,20 @@ mod actions {
 
             set!(world, (room_list, room, run, player));
         }
-        fn move_player(ref world: IWorldDispatcher, direction: felt252) {
+        fn move_player(ref world: IWorldDispatcher, direction: Direction) {
             let contract_address = get_caller_address();
-            let mut player = get!(world, contract_address, (Player));
-            let mut room = get!(world, player.run_id, (Room));
+            let player = get!(world, contract_address, (Player));
+            let room = get!(world, player.run_id, (Room));
             let mut position = get!(world, player.run_id, (Position));
-            // TODO: Move player in the room
-            if position.pos == 0 {
-                //TODO first move
-            } else {
-                //TODO move player
-            }
+            let mut run = get!(world, player.run_id, (Run));
+
+            assert(position.pos != 0, 'Invalid position');
+
+            position.pos = move_player(direction, room.map, room.player_positions, position.pos);
+
+            run.move_count += 1;
+
+            set!(world, (position, run));
         }
     }
 }

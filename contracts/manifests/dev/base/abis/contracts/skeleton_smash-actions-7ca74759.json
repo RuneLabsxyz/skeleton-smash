@@ -132,6 +132,48 @@
     "interface_name": "skeleton_smash::systems::actions::IActions"
   },
   {
+    "type": "enum",
+    "name": "skeleton_smash::types::direction::Direction",
+    "variants": [
+      {
+        "name": "None",
+        "type": "()"
+      },
+      {
+        "name": "NorthWest",
+        "type": "()"
+      },
+      {
+        "name": "North",
+        "type": "()"
+      },
+      {
+        "name": "NorthEast",
+        "type": "()"
+      },
+      {
+        "name": "East",
+        "type": "()"
+      },
+      {
+        "name": "SouthEast",
+        "type": "()"
+      },
+      {
+        "name": "South",
+        "type": "()"
+      },
+      {
+        "name": "SouthWest",
+        "type": "()"
+      },
+      {
+        "name": "West",
+        "type": "()"
+      }
+    ]
+  },
+  {
     "type": "interface",
     "name": "skeleton_smash::systems::actions::IActions",
     "items": [
@@ -160,7 +202,7 @@
         "inputs": [
           {
             "name": "direction",
-            "type": "core::felt252"
+            "type": "skeleton_smash::types::direction::Direction"
           }
         ],
         "outputs": [],
