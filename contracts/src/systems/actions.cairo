@@ -1,5 +1,4 @@
-use skeleton_smash::models::Direction;
-use skeleton_smash::models::Position;
+use skeleton_smash::models::setup::Position;
 
 // define the interface
 #[dojo::interface]
@@ -12,7 +11,7 @@ trait IActions {
 mod actions {
     use super::IActions;
     use starknet::{ContractAddress, get_caller_address};
-    use skeleton_smash::models::{Position, Vec2, Moves, Direction, DirectionsAvailable};
+    use skeleton_smash::models::setup::{Position, Vec2, Moves, Direction, DirectionsAvailable};
 
 
     #[abi(embed_v0)]
