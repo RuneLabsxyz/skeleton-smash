@@ -1,6 +1,6 @@
 kind = "DojoContract"
-class_hash = "0x293c02d57cd8a4bc6048294f2ecc71d7811bf92e66791ff9498b8fe7da9e28c"
-original_class_hash = "0x293c02d57cd8a4bc6048294f2ecc71d7811bf92e66791ff9498b8fe7da9e28c"
+class_hash = "0x4aec1229345985a2fa68c55c5bcca29316d5583013598c24e23e69e90d6614a"
+original_class_hash = "0x4aec1229345985a2fa68c55c5bcca29316d5583013598c24e23e69e90d6614a"
 base_class_hash = "0x0"
 abi = "manifests/dev/base/abis/contracts/skeleton_smash-actions-7ca74759.json"
 reads = []
