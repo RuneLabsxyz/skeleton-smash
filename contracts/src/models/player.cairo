@@ -9,6 +9,14 @@ struct Player {
     run_history: Array<u32>, // history of run ids
 }   
 
+#[generate_trait]
+impl PlayerImpl of PlayerTrait {
+    fn set_run_id(ref self: Player, run_id: u32) -> Player {
+        //TODO correct run history
+        Player { contract_address: self.contract_address, run_id, run_history: ArrayTrait::new() }
+    }
+}
+
 #[derive(Copy, Drop, Serde, Introspect)]
 #[dojo::model]
 struct Run {
@@ -31,11 +39,6 @@ impl RunImpl of RunTrait {
 struct Position {
     #[key]
     run_id: u32,
-    vec: Vec2,
+    pos: felt252,
 }
  
-#[derive(Drop, Copy, Serde, Introspect)]
-struct Vec2 {
-    x: u32,
-    y: u32
-}
