@@ -1,9 +1,9 @@
 kind = "DojoModel"
-class_hash = "0x7d000915ee55cc46f10cac904371b319143be0916e06968e8c765698e41d29f"
-original_class_hash = "0x7d000915ee55cc46f10cac904371b319143be0916e06968e8c765698e41d29f"
+class_hash = "0x5b5f91000cc366b2cad2b14efeddbde91709a066b1716aea28ae05dea219030"
+original_class_hash = "0x5b5f91000cc366b2cad2b14efeddbde91709a066b1716aea28ae05dea219030"
 abi = "manifests/dev/base/abis/models/skeleton_smash-Position-53f482b3.json"
 tag = "skeleton_smash-Position"
-qualified_path = "skeleton_smash::models::position"
+qualified_path = "skeleton_smash::models::setup::position"
 manifest_name = "skeleton_smash-Position-53f482b3"
 
 [[members]]

@@ -364,11 +364,11 @@
   {
     "type": "impl",
     "name": "directions_availableImpl",
-    "interface_name": "skeleton_smash::models::Idirections_available"
+    "interface_name": "skeleton_smash::models::setup::Idirections_available"
   },
   {
     "type": "enum",
-    "name": "skeleton_smash::models::Direction",
+    "name": "skeleton_smash::models::setup::Direction",
     "variants": [
       {
         "name": "None",
@@ -394,7 +394,7 @@
   },
   {
     "type": "struct",
-    "name": "skeleton_smash::models::DirectionsAvailable",
+    "name": "skeleton_smash::models::setup::DirectionsAvailable",
     "members": [
       {
         "name": "player",
@@ -402,13 +402,13 @@
       },
       {
         "name": "directions",
-        "type": "core::array::Array::<skeleton_smash::models::Direction>"
+        "type": "core::array::Array::<skeleton_smash::models::setup::Direction>"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "skeleton_smash::models::Idirections_available",
+    "name": "skeleton_smash::models::setup::Idirections_available",
     "items": [
       {
         "type": "function",
@@ -416,7 +416,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "skeleton_smash::models::DirectionsAvailable"
+            "type": "skeleton_smash::models::setup::DirectionsAvailable"
           }
         ],
         "outputs": [],
@@ -426,7 +426,7 @@
   },
   {
     "type": "event",
-    "name": "skeleton_smash::models::directions_available::Event",
+    "name": "skeleton_smash::models::setup::directions_available::Event",
     "kind": "enum",
     "variants": []
   }
