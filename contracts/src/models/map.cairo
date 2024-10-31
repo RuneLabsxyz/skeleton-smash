@@ -45,7 +45,11 @@ struct Room {
 #[generate_trait]
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
-        let cave_map = MapTrait::new_cave(14, 18, 3, seed);
+        let mut cave_map = MapTrait::new_cave(14, 18, 3, seed);
+        let position = 245;
+        let order = 1;
+        cave_map.open_with_corridor(position, order);
+        
         Room { room_id, map: cave_map.grid, player_positions: 0, level, player_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
