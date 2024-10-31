@@ -1,8 +1,8 @@
 {
   "world": {
     "kind": "WorldContract",
-    "class_hash": "0x5c4271c8cd454ceb8049d2b0724c99d12c2ef8077fc6ad325b18978f614aab0",
-    "original_class_hash": "0x5c4271c8cd454ceb8049d2b0724c99d12c2ef8077fc6ad325b18978f614aab0",
+    "class_hash": "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce",
+    "original_class_hash": "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce",
     "abi": [
       {
         "type": "impl",
@@ -1234,13 +1234,13 @@
         ]
       }
     ],
-    "address": "0x11d3ce6d1a0cd78c9ed7c6adef5552ab26b47e575b2cd97291f4fbaed505dd7",
-    "transaction_hash": "0x63cb6f7df273b31935ec9cd2f251b033b6eb0de483dd93a940e4d17698e4208",
+    "address": "0x105c6c57af576667003fdeb6cc98bbc846acfc818517f2124ddd001513ab51c",
+    "transaction_hash": "0x25251e7a350065fbab906d747d64c9b8fed948f884125c6d9ae862ff59a67ea",
     "block_number": 3,
     "seed": "skeleton_smash",
     "metadata": {
-      "profile_name": "dev",
-      "rpc_url": "http://localhost:5050/"
+      "profile_name": "slot",
+      "rpc_url": "https://api.cartridge.gg/x/skeleton-smash/katana"
     },
     "manifest_name": "dojo-world"
   },
@@ -1248,16 +1248,16 @@
     "kind": "Class",
     "class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
     "original_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
-    "abi": "manifests/dev/deployment/abis/dojo-base.json",
+    "abi": "manifests/slot/deployment/abis/dojo-base.json",
     "tag": "dojo-base",
     "manifest_name": "dojo-base"
   },
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x1aa8449a08483315525cf7885820d8f0f02c121bbc27f659adb1b1cd9c62ecd",
-      "class_hash": "0x59e9e085f5f106eb99317d7065b7ffdf186ca6374e1f5afcad3dc07baddc68f",
-      "original_class_hash": "0x59e9e085f5f106eb99317d7065b7ffdf186ca6374e1f5afcad3dc07baddc68f",
+      "address": "0x259dff8c14c32480bdfe95f2d35240ed1ba17fff6c7ce8ef2724ac43ec3a7f1",
+      "class_hash": "0x5b7770ac6ebad9ab5c8deb1e7a956ec8147b11c505607ba44d8efb01e83d60e",
+      "original_class_hash": "0x5b7770ac6ebad9ab5c8deb1e7a956ec8147b11c505607ba44d8efb01e83d60e",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1289,7 +1289,7 @@
           "items": [
             {
               "type": "function",
-              "name": "contract_name",
+              "name": "name",
               "inputs": [],
               "outputs": [
                 {
@@ -1570,13 +1570,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "skeleton_smash-Player",
-        "skeleton_smash-Position",
-        "skeleton_smash-Room",
-        "skeleton_smash-RoomList",
-        "skeleton_smash-Run"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "skeleton_smash-actions",
       "systems": [

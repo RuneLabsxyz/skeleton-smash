@@ -8,11 +8,12 @@ sierra-replace-ids = true
 
 [scripts]
 migrate = "sozo build && sozo migrate apply"
-spawn = "./scripts/spawn.sh"
-move = "./scripts/move.sh"
+
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.19" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.16" }
 origami_map = { git = "https://github.com/dojoengine/origami" }
 
 [[target.dojo]]
+
+[profile.slot]

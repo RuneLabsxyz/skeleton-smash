@@ -1,0 +1,27 @@
+kind = "DojoModel"
+class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
+original_class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
+abi = "manifests/slot/base/abis/models/skeleton_smash-Run-4d03c68b.json"
+tag = "skeleton_smash-Run"
+qualified_path = "skeleton_smash::models::player::run"
+manifest_name = "skeleton_smash-Run-4d03c68b"
+
+[[members]]
+name = "run_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "level"
+type = "u32"
+key = false
+
+[[members]]
+name = "move_count"
+type = "u32"
+key = false
