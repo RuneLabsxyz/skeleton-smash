@@ -49,6 +49,7 @@ mod actions {
                 room_id = *room_list.room_max_id_for_level[0];
                 room = RoomTrait::new(room_id, seed, 0);
             }
+
             room = RoomTrait::add_player(ref room, contract_address);
             let run_id = world.uuid();
             let run = RunTrait::new(run_id, contract_address, 0);
@@ -58,6 +59,7 @@ mod actions {
 
             set!(world, (room_list, room, run, player));
         }
+        
         fn move_player(ref world: IWorldDispatcher, direction: Direction, seed: felt252) {
             let contract_address = get_caller_address();
             let mut player = get!(world, contract_address, (Player));
