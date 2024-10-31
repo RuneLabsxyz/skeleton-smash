@@ -74,10 +74,18 @@ mod actions {
 
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
-            position.pos = move_player(direction, room.map, room.player_positions, position.pos);
-            room.player_positions = set_player_bitmap(room.player_positions, position.pos);
+            let (new_position, is_exit) = move_player(direction, room.map, room.player_positions, position.pos);
 
-            run.move_count += 1;
+            if is_exit {
+                //level up
+                // TODO: Add new room
+            } else {
+                // Update position and player bitmap
+                position.pos = new_position;
+                room.player_positions = set_player_bitmap(room.player_positions, position.pos);
+                // Increment move count
+                run.move_count += 1;
+            }
 
             set!(world, (position, run, room));
         }
@@ -98,10 +106,18 @@ mod actions {
             assert(!check_obstacle(room.player_positions, 14, 18, position.pos), 'Player in the way');
 
             // Move has to be North
-            position.pos = move_player(Direction::North, room.map, room.player_positions, position.pos);
-            room.player_positions = set_player_bitmap(room.player_positions, position.pos);
+            let (new_position, is_exit) = move_player(Direction::North, room.map, room.player_positions, position.pos);
 
-            run.move_count += 1;
+            if is_exit {
+                //level up
+                // TODO: Add new room
+            } else {
+                // Update position and player bitmap
+                position.pos = new_position;
+                room.player_positions = set_player_bitmap(room.player_positions, position.pos);
+                // Increment move count
+                run.move_count += 1;
+            }
 
             set!(world, (position, run, room));
         }

@@ -2,9 +2,10 @@ use skeleton_smash::types::direction::Direction;
 use skeleton_smash::helpers::bitmap::{pow2_const};
 
 // this function will move the player in the room and return the new position
-fn move_player(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8) -> u8 {
+fn move_player(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8) -> (u8, bool) {
     let width = 14;
     let height = 18;    
+    let mut is_exit = false;
     
     // Keep moving until we hit an edge or obstacle
     loop {
@@ -20,10 +21,15 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
         }
 
         current_position = apply_move(direction, current_position, width);
+
+        if check_exit(width, height, current_position, direction) {
+            is_exit = true;
+            break;
+        }
     };
     
     // Return final position
-    current_position
+    return (current_position, is_exit);
 }
 
 #[inline]
@@ -98,4 +104,23 @@ fn check_obstacle(grid: felt252, width: u8, height: u8, position: u8) -> bool {
     let bit_position = pow2_const(position);
     let result = grid.try_into().unwrap() & bit_position;
     result != 0_u256
+}
+
+/// Check if the position is the exit
+/// # Arguments
+/// * `width` - The width of the grid
+/// * `height` - The height of the grid
+/// * `position` - The current position
+/// # Returns
+/// * Whether the position is the exit
+#[inline]
+fn check_exit(width: u8, height: u8, position: u8, direction: Direction) -> bool {
+
+    let is_north = match direction {
+        Direction::North => true,
+        _ => false,
+    };
+
+    let bit_position = pow2_const(position);
+    bit_position == 245_u256 && is_north
 }
