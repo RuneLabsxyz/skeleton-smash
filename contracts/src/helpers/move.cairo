@@ -1,4 +1,5 @@
 use skeleton_smash::types::direction::Direction;
+use skeleton_smash::helpers::bitmap::{pow2_const};
 
 // this function will move the player in the room and return the new position
 fn move_player(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8) -> u8 {
@@ -8,10 +9,13 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
     // Keep moving until we hit an edge or obstacle
     loop {
         // Check if next position is blocked in map or player_positions
-        if check(map, width, height, current_position, direction) {
+        if check_out_of_bounds(width, height, current_position, direction) {
             break; 
         }
-        if check(player_positions, width, height, current_position, direction) {
+        if check_blocked(map, width, height, current_position, direction) {
+            break; 
+        }
+        if check_blocked(player_positions, width, height, current_position, direction) {
             break; 
         }
 
@@ -35,17 +39,16 @@ fn apply_move(direction: Direction, current_position: u8, width: u8) -> u8 {
 }
 
 
-/// Check if the position can be visited in the specified direction.
+/// Check if the position is out of bounds in the specified direction.
 /// # Arguments
-/// * `grid` - The grid
 /// * `width` - The width of the grid
 /// * `height` - The height of the grid
 /// * `position` - The current position
 /// * `direction` - The direction to check
 /// # Returns
-/// * Whether the position can be visited
+/// * Whether the position is out of bounds
 #[inline]
-fn check(grid: felt252, width: u8, height: u8, position: u8, direction: Direction) -> bool {
+fn check_out_of_bounds(width: u8, height: u8, position: u8, direction: Direction) -> bool {
     let (x, y) = (position % width, position / width);
     match direction {
         Direction::North => (y < height - 2) && (x != 0) && (x != width - 1),
@@ -56,3 +59,28 @@ fn check(grid: felt252, width: u8, height: u8, position: u8, direction: Directio
     }
 }
 
+/// Check if the position is blocked in the specified direction.
+/// # Arguments
+/// * `grid` - The grid as a bitmaps
+/// * `width` - The width of the grid
+/// * `height` - The height of the grid
+/// * `position` - The current position
+/// * `direction` - The direction to check
+/// # Returns
+/// * Whether the position is blocked
+#[inline]
+fn check_blocked(grid: felt252, width: u8, height: u8, position: u8, direction: Direction) -> bool {
+    let (x, y) = (position % width, position / width);
+    let next_position = match direction {
+        Direction::North => (y - 1) * width + x,
+        Direction::South => (y + 1) * width + x,
+        Direction::East => y * width + (x + 1),
+        Direction::West => y * width + (x - 1),
+        _ => position,
+    };
+
+    // Check if there is a wall at the next position using the grid bitmap
+    let bit_position = pow2_const(next_position);
+    let result = grid.try_into().unwrap() & bit_position;
+    result != 0_u256
+}

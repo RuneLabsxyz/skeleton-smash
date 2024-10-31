@@ -5,6 +5,7 @@ trait IActions {
     fn spawn(ref world: IWorldDispatcher, seed: felt252);
     fn initialize(ref world: IWorldDispatcher);
     fn move_player(ref world: IWorldDispatcher, direction: Direction);
+    fn first_move(ref world: IWorldDispatcher, direction: Direction, chosen_column: u8);
 }
 
 #[dojo::contract]
@@ -79,6 +80,17 @@ mod actions {
             run.move_count += 1;
 
             set!(world, (position, run, room));
+        }
+
+        fn first_move(ref world: IWorldDispatcher, direction: Direction, chosen_column: u8) {
+            let contract_address = get_caller_address();
+            let mut player = get!(world, contract_address, (Player));
+            let mut room = get!(world, player.run_id, (Room));
+            let mut position = get!(world, player.run_id, (Position));
+
+            assert(position.pos == 0, 'Invalid position');
+
+            
         }
     }
 }
