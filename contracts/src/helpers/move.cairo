@@ -84,3 +84,18 @@ fn check_blocked(grid: felt252, width: u8, height: u8, position: u8, direction: 
     let result = grid.try_into().unwrap() & bit_position;
     result != 0_u256
 }
+
+/// Check if there is obstacle in the specified direction.
+/// # Arguments
+/// * `grid` - The grid as a bitmaps
+/// * `width` - The width of the grid
+/// * `height` - The height of the grid
+/// * `position` - The current position
+/// # Returns
+/// * Whether there is an obstacle in the specified direction
+#[inline]
+fn check_obstacle(grid: felt252, width: u8, height: u8, position: u8) -> bool {
+    let bit_position = pow2_const(position);
+    let result = grid.try_into().unwrap() & bit_position;
+    result != 0_u256
+}

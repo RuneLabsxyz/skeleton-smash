@@ -5,7 +5,7 @@ trait IActions {
     fn spawn(ref world: IWorldDispatcher, seed: felt252);
     fn initialize(ref world: IWorldDispatcher);
     fn move_player(ref world: IWorldDispatcher, direction: Direction);
-    fn first_move(ref world: IWorldDispatcher, direction: Direction, chosen_column: u8);
+    fn first_move(ref world: IWorldDispatcher, chosen_column: u8);
 }
 
 #[dojo::contract]
@@ -14,7 +14,7 @@ mod actions {
     use starknet::{ContractAddress, get_caller_address};
     use skeleton_smash::models::player::{Player, Run, RunTrait, Position, PlayerTrait};
     use skeleton_smash::models::map::{RoomList, RoomListTrait, Room, RoomTrait};
-    use skeleton_smash::helpers::move::{move_player};
+    use skeleton_smash::helpers::move::{move_player, check_obstacle, check_out_of_bounds};
     use skeleton_smash::types::direction::Direction;
     use skeleton_smash::helpers::bitmap::{set_player_bitmap, clear_player_bitmap};
 
@@ -82,15 +82,28 @@ mod actions {
             set!(world, (position, run, room));
         }
 
-        fn first_move(ref world: IWorldDispatcher, direction: Direction, chosen_column: u8) {
+        /// First move of the run
+        /// # Arguments
+        /// * `chosen_column` - The column to move to (0-13)
+        fn first_move(ref world: IWorldDispatcher, chosen_column: u8) {
             let contract_address = get_caller_address();
             let mut player = get!(world, contract_address, (Player));
             let mut room = get!(world, player.run_id, (Room));
             let mut position = get!(world, player.run_id, (Position));
+            let mut run = get!(world, player.run_id, (Run));
 
             assert(position.pos == 0, 'Invalid position');
 
-            
+            assert(!check_obstacle(room.map, 14, 18, position.pos), 'Wall in the way');
+            assert(!check_obstacle(room.player_positions, 14, 18, position.pos), 'Player in the way');
+
+            // Move has to be North
+            position.pos = move_player(Direction::North, room.map, room.player_positions, position.pos);
+            room.player_positions = set_player_bitmap(room.player_positions, position.pos);
+
+            run.move_count += 1;
+
+            set!(world, (position, run, room));
         }
     }
 }

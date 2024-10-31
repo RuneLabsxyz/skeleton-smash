@@ -213,10 +213,6 @@
         "name": "first_move",
         "inputs": [
           {
-            "name": "direction",
-            "type": "skeleton_smash::types::direction::Direction"
-          },
-          {
             "name": "chosen_column",
             "type": "core::integer::u8"
           }
