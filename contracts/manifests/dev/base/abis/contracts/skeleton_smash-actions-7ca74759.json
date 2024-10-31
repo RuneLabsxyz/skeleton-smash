@@ -203,6 +203,26 @@
           {
             "name": "direction",
             "type": "skeleton_smash::types::direction::Direction"
+          },
+          {
+            "name": "seed",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "first_move",
+        "inputs": [
+          {
+            "name": "chosen_column",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "seed",
+            "type": "core::felt252"
           }
         ],
         "outputs": [],

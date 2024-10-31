@@ -12,6 +12,8 @@ mod tests {
 
 mod helpers {
     mod move;
+    mod bitmap;
+    mod power;
 }
 
 mod types {
