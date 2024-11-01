@@ -1,8 +1,6 @@
 <script lang="ts">
   import "../app.css";
-  import { onMount } from "svelte";
   import { initializeStore } from "../stores/dojoStores";
-  import { writable } from "svelte/store";
   import { page } from "$app/stores";
   import type { Snippet } from 'svelte';
 

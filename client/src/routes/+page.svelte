@@ -24,3 +24,9 @@
 
     <button on:click={createPlayer}>Create Player</button>
 </div>
+
+<div class="absolute top-0 right-0 w-screen h-screen flex justify-end items-start p-4">
+    {#if loading}
+        <Loading />
+    {/if}
+</div>
