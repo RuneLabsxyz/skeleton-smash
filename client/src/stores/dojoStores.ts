@@ -42,3 +42,12 @@ export async function getDojo(): Promise<SetupResult> {
     })
   });
 }
+
+export async function getDojoContext(): Promise<[Account, SetupResult]> {
+  const dojo = await getDojo();
+  return [
+    // It should set a value
+    dojo.burnerManager.getActiveAccount()!,
+    dojo
+  ];
+}

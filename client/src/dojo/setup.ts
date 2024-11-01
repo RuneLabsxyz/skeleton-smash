@@ -19,7 +19,7 @@ export async function setup({ ...config }: DojoConfig) {
     toriiUrl: config.toriiUrl,
     relayUrl: '',
     worldAddress:
-      '0x105c6c57af576667003fdeb6cc98bbc846acfc818517f2124ddd001513ab51c' || '',
+      '0x105c6c57af576667003fdeb6cc98bbc846acfc818517f2124ddd001513ab51c',
   })
 
   // create contract components

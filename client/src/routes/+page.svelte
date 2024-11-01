@@ -1,5 +1,11 @@
 <script lang="ts">
     import Grid from "$lib/components/Grid.svelte";
+
+    import { getDojoContext } from "$stores/dojoStores";
+
+    async function setup() {
+        let dojo = await getDojoContext();
+    }
 </script>
 
 <div class="w-screen flex h-screen justify-center items-center flex-col">
