@@ -5,7 +5,7 @@ import { dojoConfig } from "$src/dojoConfig";
 import { componentValueStore } from "$src/dojo/componentValueStore";
 import type { Direction as ModelDirection, Run } from "$src/dojo/models.gen";
 
-const SEED = () => BigInt(Math.random() * 1_000_000);
+const SEED = () => BigInt(Math.floor(Math.random() * 1_000_000));
 
 export async function startRun() {
     // Get the context 

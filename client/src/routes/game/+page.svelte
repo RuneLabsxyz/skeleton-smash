@@ -1,32 +1,16 @@
-<script lang="ts">
+<script>
+    import { currentPlayerRun, startRun } from "$lib/api/run";
+    import { currentPlayerRoom } from "$lib/api/room";
 
-    import type { Scene } from "phaser";
-    import PhaserGame, { type TPhaserRef } from "$lib/components/PhaserGame.svelte";
-    import UiManager from "$lib/components/UiManager.svelte";
 
-    let phaserRef: TPhaserRef = { game: null, scene: null};
-    let currentScene = '';
+    currentPlayerRoom.subscribe((e) => console.log("room: ", e));
 
-    // Use Event Bus to avoid this
-    const setCurrentScene = (scene: Scene) => {
-        currentScene = scene.scene.key;
+    async function startGame() {
+        await startRun();
     }
-    
+
 </script>
 
-<div id="app">
-    <PhaserGame bind:phaserRef={phaserRef} currentActiveScene={setCurrentScene} />
-    <UiManager phaserRef={phaserRef} currentScene={currentScene} />
-</div>
 
-<style>
-    #app {
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-</style>
+
+<button on:click={startGame}>Start Game</button>
