@@ -1,35 +1,36 @@
-<script>
-    import "../app.css";
-    import { onMount } from 'svelte'
-    import { initializeStore } from '../stores/dojoStores'
-    import { writable } from 'svelte/store'
-    import { page } from '$app/stores'
+<script lang="ts">
+  import "../app.css";
+  import { onMount } from "svelte";
+  import { initializeStore } from "../stores/dojoStores";
+  import { writable } from "svelte/store";
+  import { page } from "$app/stores";
+  import type { Snippet } from 'svelte';
 
-    const isStoreInitialized = writable(false)
+  const { children } = $props<{
+    children: Snippet
+  }>();
 
-    async function initStore() {
-        try {
-        await initializeStore()
-        isStoreInitialized.set(true)
-        console.log('store initialized')
-        } catch (error) {
-        console.error('Failed to initialize store:', error)
-        isStoreInitialized.set(false)
-        }
+  async function initStore() {
+    try {
+      await initializeStore();
+      console.log("store initialized");
+    } catch (error) {
+      console.error("Failed to initialize store:", error);
+      throw error;
     }
+  }
 
-    onMount(() => {
-        initStore()
-    })
+  let storeInitalization = $state(initStore());
 
-    $: {
-        $page.url
-        initStore()
-    }
+  page.subscribe(p => {
+    // We possibly changed the URL, so we need to reset the store.
+    storeInitalization = initStore();
+  })
 </script>
 
-{#if $isStoreInitialized}
-  <slot />
-{:else}
-  <p>Loading...</p>
-{/if}
+
+{#await storeInitalization}
+  Loading...
+{:then}
+  {@render children()}
+{/await}

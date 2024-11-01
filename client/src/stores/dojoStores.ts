@@ -15,6 +15,7 @@ export async function initializeStore() {
     const result = await setup(dojoConfig)
     console.log('setup complete')
     dojoStore.set(result)
+    // We are using a burner, seems ok.
     accountStore.set(result.burnerManager.getActiveAccount())
     console.log('set stores')
     isSetup.set(true)
@@ -26,4 +27,18 @@ export async function initializeStore() {
     console.error('Failed to initialize store:', error)
     isSetup.set(false)
   }
+}
+
+/// Utility function to access the dojo store in an asynchronous context.
+export async function getDojo(): Promise<SetupResult> {
+  return new Promise((ok, err) => {
+    dojoStore.subscribe(val => {
+      ok(val);
+    })
+    isSetup.subscribe((val) => {
+      if (!val) {
+        err("Failed to initalize store.");
+      }
+    })
+  });
 }
