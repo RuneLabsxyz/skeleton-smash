@@ -40,7 +40,7 @@ struct Room {
     map: felt252,
     player_positions: felt252,
     level: u32,
-    player_ids: Array<ContractAddress>, // List of player ids in the room. At 5 players the room is killed
+    run_ids: Array<u32>, // List of player ids in the room. At 5 players the room is killed
 }
 
 #[generate_trait]
@@ -51,26 +51,26 @@ impl RoomImpl of RoomTrait {
         let order = 1;
         cave_map.open_with_corridor(position, order);
         
-        Room { room_id, map: cave_map.grid, player_positions: 0, level, player_ids: ArrayTrait::new() }
+        Room { room_id, map: cave_map.grid, player_positions: 0, level, run_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
-        self.player_ids.len() == MAX_PLAYERS
+        self.run_ids.len() == MAX_PLAYERS
     }
     fn does_room_exist(ref self: Room) -> bool {
         self.map != 0
     }
-    fn add_player(ref self: Room, player_id: ContractAddress) -> Room {
-        let mut player_ids = ArrayTrait::new();
+    fn add_player(ref self: Room, run_id: u32) -> Room {
+        let mut run_ids = ArrayTrait::new();
         let mut i = 0;
         loop {
-            if i == self.player_ids.len() {
+            if i == self.run_ids.len() {
                 break;
             }
-            player_ids.append(*self.player_ids.at(i));
+            run_ids.append(*self.run_ids.at(i));
             i += 1;
         };
-        player_ids.append(player_id);
-        Room { room_id: self.room_id, map: self.map, player_positions: self.player_positions, level: self.level, player_ids }
+        run_ids.append(run_id);
+        Room { room_id: self.room_id, map: self.map, player_positions: self.player_positions, level: self.level, run_ids }
     }
 }
 

@@ -51,8 +51,8 @@ mod actions {
                 room = RoomTrait::new(room_id, seed, 0);
             }
 
-            room = RoomTrait::add_player(ref room, contract_address);
             let run_id = world.uuid();
+            room = RoomTrait::add_player(ref room, run_id);
             let run = RunTrait::new(run_id, contract_address, 0, room.room_id);
 
             player = PlayerTrait::set_run_id(ref player, run_id);
@@ -91,7 +91,7 @@ mod actions {
                     room_id = *room_list.room_max_id_for_level[new_level];
                     room = RoomTrait::new(room_id, seed, new_level);
                 }
-                room = RoomTrait::add_player(ref room, contract_address);
+                room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;
                 run.move_count = 0;
                 run.room_id = room_id;
@@ -145,7 +145,7 @@ mod actions {
                     room_id = *room_list.room_max_id_for_level[new_level];
                     room = RoomTrait::new(room_id, seed, new_level);
                 }
-                room = RoomTrait::add_player(ref room, contract_address);
+                room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;
                 run.move_count = 0;
                 run.room_id = room_id;
