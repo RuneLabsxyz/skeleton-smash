@@ -12,6 +12,7 @@ export function felt(feltStr: string): Felt {
 }
 
 export function isSet(felt: Felt, col: number, row: number): boolean {
+    if (felt == null) return false;
     let offset = col * WIDTH + row;
     let mask = (BigInt(1) << BigInt(offset - 1));
     return (mask & felt.val) !== BigInt(0);

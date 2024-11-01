@@ -1,12 +1,17 @@
 <script lang="ts">
     import { HEIGHT, isSet, WIDTH } from "$lib/logic/feltUtils";
-    import { testMap, testPlayers } from "../test";
+    import { testPlayers } from "../test";
     import Wall from "./cell/Wall.svelte";
     import Player from "./cell/Player.svelte";
     import { playerPosition, handleKeydown } from "./players";
     import { onMount } from "svelte";
+    import { type Felt } from "$lib/logic/feltUtils";
 
     let player = $derived($playerPosition);
+
+    let { map } = $props<{
+        map: Felt | null;
+    }>();
 
     onMount(() => {
         window.addEventListener("keydown", handleKeydown);
@@ -17,7 +22,7 @@
     {#each new Array(18) as _, col}
         <div class="flex flex-row gap-1">
             {#each new Array(14) as _, row}
-                {#if isSet(testMap, HEIGHT - 1 - col, WIDTH - row)}
+                {#if isSet(map, HEIGHT - 1 - col, WIDTH - row)}
                     <Wall />
                 {:else if isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)}
                     <Player current={false} />
