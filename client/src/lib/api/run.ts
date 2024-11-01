@@ -78,7 +78,7 @@ export async function Run(runId: number) {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
     const valueHash = torii.poseidonHash([String(runId)]);
-
+    
     // return a component value store of the object:
     return componentValueStore(clientComponents.Run, valueHash);
 }
@@ -90,7 +90,7 @@ export const currentPlayerRun: Readable<Run | null> = derived([currentPlayer], (
     }
 
 
-    get(Run(player?.run_id as number)).subscribe(val => {
+    get(Run(Number(player?.run_id))).subscribe(val => {
         set(val as Run);
     })
 });

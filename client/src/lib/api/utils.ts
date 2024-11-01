@@ -4,6 +4,8 @@ export default function get<T>(asyncedStore: Promise<Readable<T | null>>): Reada
     return readable<T | null>(null, (set) => {
         asyncedStore.then(store => {
             store.subscribe(value => set(value))
+        }).catch(err => {
+            console.error("An error occurred...", err)
         })
     })
 }

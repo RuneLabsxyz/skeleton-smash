@@ -32,8 +32,9 @@ export async function Room(roomId: number): Promise<Readable<RoomState | null>> 
         // - Mark them as dead if they are
         // - Extract the position of the player in the run
         // - Export that in a map
-
-        val.run_ids.forEach((runId, idx) => {
+ 
+        result.run_ids.forEach((runIdRaw) => {
+            const runId = runIdRaw as number;
             // Subscribe to the store, and update the current value whenever we get it:
             get(Run(runId)).subscribe(run => {
                 if (run == null || run.room_id != roomId) {
@@ -61,13 +62,13 @@ export async function Room(roomId: number): Promise<Readable<RoomState | null>> 
     })
 }
 
-export const currentPlayerRoom: Readable<Room | null> = derived([currentPlayerRun], ([playerRun], set) => {
+export const currentPlayerRoom: Readable<RoomState | null> = derived([currentPlayerRun], ([playerRun], set) => {
     if (playerRun == null) {
         set(null);
         return;
     }
 
     get(Room(playerRun.room_id as number)).subscribe(val => {
-        set(val as Room);
+        set(val);
     })
 });
