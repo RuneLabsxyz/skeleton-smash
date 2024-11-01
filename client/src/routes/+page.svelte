@@ -3,14 +3,10 @@
 
     import { getDojoContext } from "$stores/dojoStores";
     import { currentPlayer } from "$lib/api/player";
+    import { currentPlayerRun, startRun } from "$lib/api/run";
+    import { currentPlayerRoom } from "$lib/api/room";
 
-    currentPlayer.subscribe((val) => {
-        console.log("Got value!", val);
-    });
-
-    function createPlayer() {
-        
-    }
+    currentPlayerRoom.subscribe((e) => console.log("room: ", e));
 </script>
 
 <div class="w-screen flex h-screen justify-center items-center flex-col">
@@ -19,5 +15,16 @@
     </h1>
     <Grid></Grid>
 
-    <div onclick={() => }></div>
+    <span>
+        Working on runId: {$currentPlayerRun?.run_id}, so we are in the room {$currentPlayerRun?.room_id}
+    </span>
+    <span>
+        The room {$currentPlayerRoom?.room_id} exists, and we have the following
+        players in it: {JSON.stringify(
+            $currentPlayerRoom?.player_ids.map(
+                (e) => "0x" + e.toString(16).slice(0, 5) + "...",
+            ),
+        )}
+    </span>
+    <button onclick={() => startRun()}>Start a run</button>
 </div>
