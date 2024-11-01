@@ -5,7 +5,11 @@ import { currentPlayerRun } from "./run";
 import type { Readable } from "svelte/motion";
 import { derived } from "svelte/store";
 
-export async function Room(roomId: number) {
+export type RoomState = Room & {
+
+};
+
+export async function Room(roomId: number): Promise<Readable<Room | null>> {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
     
@@ -16,6 +20,12 @@ export async function Room(roomId: number) {
         // This is a bug in the current version of the SDK. We are unfortunately stuck with it for now.
         // dojo... plz fix
         val.player_ids = val.player_ids.map(e => BigInt((e as any).value))
+ 
+        // What we need to do is for every player in the room:
+        // - Get the runs, nd check if they are still in the current room (if they are not, we can consider they already finished it)
+        // - Mark them as dead if they are
+        // - Extract the position of the player in the run
+        // - Export that in a map
 
         set(val);
     })
