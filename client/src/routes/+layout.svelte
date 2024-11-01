@@ -27,8 +27,11 @@
 </script>
 
 
-{#await storeInitalization}
+{@render children()}
+
+<!-- {#await storeInitalization}
   Loading...
 {:then}
   {@render children()}
 {/await}
+ -->
