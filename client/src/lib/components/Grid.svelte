@@ -3,9 +3,14 @@
     import { testMap, testPlayers } from "../test";
     import Wall from "./cell/Wall.svelte";
     import Player from "./cell/Player.svelte";
-    import { playerPosition } from "./players";
+    import { playerPosition, handleKeydown } from "./players";
+    import { onMount } from "svelte";
 
-    let player = $playerPosition;
+    let player = $derived($playerPosition);
+
+    onMount(() => {
+        window.addEventListener("keydown", handleKeydown);
+    });
 </script>
 
 <div class="flex flex-col gap-1 w-min border-2 border-gray-200">
