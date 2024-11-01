@@ -1,20 +1,30 @@
 <script lang="ts">
     import { HEIGHT, isSet, WIDTH } from "$lib/logic/feltUtils";
-    import { testMap } from "../test";
+    import { testMap, testPlayers } from "../test";
     import Wall from "./cell/Wall.svelte";
+    import Player from "./cell/Player.svelte";
+    import { playerPosition, handleKeydown } from "./players";
+    import { onMount } from "svelte";
 
-    // Get the current room for player (fetch the player by the burner)
+    let player = $derived($playerPosition);
+
+    onMount(() => {
+        window.addEventListener("keydown", handleKeydown);
+    });
 </script>
 
-<div class="flex flex-col gap-1 w-min">
+<div class="flex flex-col gap-1 w-min border-2 border-gray-200">
     {#each new Array(18) as _, col}
         <div class="flex flex-row gap-1">
             {#each new Array(14) as _, row}
                 {#if isSet(testMap, HEIGHT - 1 - col, WIDTH - row)}
                     <Wall />
+                {:else if isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)}
+                    <Player current={false} />
+                {:else if player === col * WIDTH + row}
+                    <Player current={true} />
                 {:else}
-                    <div class="w-8 aspect-square text-center bg-red-200">
-                        x
+                    <div class="w-8 aspect-square">
                     </div>
                 {/if}
             {/each}

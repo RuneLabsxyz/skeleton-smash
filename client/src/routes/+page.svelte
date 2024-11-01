@@ -1,8 +1,11 @@
 <script lang="ts">
-    import Grid from "$lib/components/Grid.svelte";
-
+    import Grid from "$lib/components/Grid.svelte";    
+    import { moveRequested } from "$lib/components/players";
+    import Loading from "$lib/components/Loading.svelte";
     import { getDojoContext } from "$stores/dojoStores";
     import { currentPlayer } from "$lib/api/player";
+  
+    let loading = $derived($moveRequested);
 
     currentPlayer.subscribe((val) => {
         console.log("Got value!", val);
@@ -19,5 +22,5 @@
     </h1>
     <Grid></Grid>
 
-    <div onclick={() => }></div>
+    <button on:click={createPlayer}>Create Player</button>
 </div>
