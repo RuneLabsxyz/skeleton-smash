@@ -1,5 +1,4 @@
 use skeleton_smash::types::direction::Direction;
-use skeleton_smash::consts::{WIDTH, HEIGHT};
 
 #[dojo::interface]
 trait IActions {
@@ -18,6 +17,7 @@ mod actions {
     use skeleton_smash::helpers::move::{move_player, check_obstacle, check_out_of_bounds};
     use skeleton_smash::types::direction::Direction;
     use skeleton_smash::helpers::bitmap::{set_player_bitmap, clear_player_bitmap};
+    use skeleton_smash::consts::{WIDTH, HEIGHT};
 
 
     #[abi(embed_v0)]

@@ -1,4 +1,4 @@
-pub consts HEIGHT: u32 = 18;
-pub consts WIDTH: u32 = 14;
+pub const HEIGHT: u8 = 18;
+pub const WIDTH: u8 = 14;
 
-pub consts MAX_PLAYERS: u32 = 20;
+pub const MAX_PLAYERS: u32 = 20;

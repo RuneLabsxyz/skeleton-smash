@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 use origami_map::map::{MapTrait};
-use skeleton_smash::consts::{WIDTH, HEIGHT};
+use skeleton_smash::consts::{WIDTH, HEIGHT, MAX_PLAYERS};
 
 #[derive(Drop, Serde, Introspect)]
 #[dojo::model]
@@ -54,7 +54,7 @@ impl RoomImpl of RoomTrait {
         Room { room_id, map: cave_map.grid, player_positions: 0, level, player_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
-        self.player_ids.len() == 5
+        self.player_ids.len() == MAX_PLAYERS
     }
     fn does_room_exist(ref self: Room) -> bool {
         self.map != 0
