@@ -1,5 +1,7 @@
 import { EventBus } from '../eventBus';
 import { Scene } from 'phaser';
+import { testMap, testPlayers } from "$lib/test";
+import { HEIGHT, isSet, WIDTH } from "$lib/logic/feltUtils";
 
 export class Game extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera | undefined;
@@ -18,8 +20,8 @@ export class Game extends Scene {
         this.background.displayWidth = this.game.canvas.width; 
         this.background.displayHeight = this.game.canvas.height * 2; 
 
-        const gridWidth = 14;
-        const gridHeight = 19;
+        const gridWidth = WIDTH;
+        const gridHeight = HEIGHT + 1;
         const verticalPadding = 50; 
         const cellSize = Math.min(
             this.game.canvas.width / gridWidth, 
@@ -51,6 +53,31 @@ export class Game extends Scene {
         border.setOrigin(0.5);
 
         grid.setOrigin(0.5);
+
+        for (let col = 0; col < gridHeight - 1; col++) {
+            for (let row = 0; row < gridWidth; row++) {
+                if (isSet(testMap, HEIGHT - 1 - col, WIDTH - row)) {
+                    this.add.rectangle(
+                        this.game.canvas.width / 2 - (gridWidth * cellSize / 2) + (row * cellSize) + cellSize / 2,
+                        this.game.canvas.height / 2 - (gridHeight * cellSize / 2) + (col * cellSize) + cellSize / 2,
+                        cellSize - 2,
+                        cellSize - 2,
+                        0x000000,
+                        1
+                    );
+                }
+                if (isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)) {
+                    this.add.rectangle(
+                        this.game.canvas.width / 2 - (gridWidth * cellSize / 2) + (row * cellSize) + cellSize / 2,
+                        this.game.canvas.height / 2 - (gridHeight * cellSize / 2) + (col * cellSize) + cellSize / 2,
+                        cellSize - 2,
+                        cellSize - 2,
+                        0xff0000,
+                        1
+                    );
+                }
+            }
+        }
 
         EventBus.emit('current-scene-ready', this);
     }
