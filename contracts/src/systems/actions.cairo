@@ -33,7 +33,7 @@ mod actions {
             let contract_address = get_caller_address();
             // Retrieve the player's current position from the world.
             let mut player = get!(world, contract_address, (Player));
-            
+
             assert(player.run_id == 0, 'Player already in a run');
 
             // Get the room list and current room
@@ -52,14 +52,13 @@ mod actions {
 
             room = RoomTrait::add_player(ref room, contract_address);
             let run_id = world.uuid();
-            let run = RunTrait::new(run_id, contract_address, 0);
-        
-            player = PlayerTrait::set_run_id(ref player, run_id);
+            let run = RunTrait::new(run_id, contract_address, 0, room.room_id);
 
+            player = PlayerTrait::set_run_id(ref player, run_id);
 
             set!(world, (room_list, room, run, player));
         }
-        
+
         fn move_player(ref world: IWorldDispatcher, direction: Direction, seed: felt252) {
             let contract_address = get_caller_address();
             let mut player = get!(world, contract_address, (Player));
@@ -71,7 +70,9 @@ mod actions {
 
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
-            let (new_position, is_exit) = move_player(direction, room.map, room.player_positions, position.pos);
+            let (new_position, is_exit) = move_player(
+                direction, room.map, room.player_positions, position.pos
+            );
 
             if is_exit {
                 // Get the room list and current room
@@ -92,8 +93,8 @@ mod actions {
                 room = RoomTrait::add_player(ref room, contract_address);
                 run.level = new_level;
                 run.move_count = 0;
+                run.room_id = room_id;
                 player = PlayerTrait::set_run_id(ref player, run.run_id);
-
             } else {
                 // Update position and player bitmap
                 position.pos = new_position;
@@ -118,10 +119,14 @@ mod actions {
             assert(position.pos == 0, 'Invalid position');
 
             assert(!check_obstacle(room.map, 14, 18, position.pos), 'Wall in the way');
-            assert(!check_obstacle(room.player_positions, 14, 18, position.pos), 'Player in the way');
+            assert(
+                !check_obstacle(room.player_positions, 14, 18, position.pos), 'Player in the way'
+            );
 
             // Move has to be North
-            let (new_position, is_exit) = move_player(Direction::North, room.map, room.player_positions, position.pos);
+            let (new_position, is_exit) = move_player(
+                Direction::North, room.map, room.player_positions, position.pos
+            );
 
             if is_exit {
                 // Get the room list and current room
@@ -142,6 +147,7 @@ mod actions {
                 room = RoomTrait::add_player(ref room, contract_address);
                 run.level = new_level;
                 run.move_count = 0;
+                run.room_id = room_id;
                 player = PlayerTrait::set_run_id(ref player, run.run_id);
             } else {
                 // Update position and player bitmap

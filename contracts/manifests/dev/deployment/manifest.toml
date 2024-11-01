@@ -24,8 +24,8 @@ manifest_name = "dojo-base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x64a81532dec0aae2c41da0d4556b3727ab13231b77a4defdc3f480ac1dae8eb"
-class_hash = "0x59e9e085f5f106eb99317d7065b7ffdf186ca6374e1f5afcad3dc07baddc68f"
-original_class_hash = "0x59e9e085f5f106eb99317d7065b7ffdf186ca6374e1f5afcad3dc07baddc68f"
+class_hash = "0x54fa6f751a95a6fd2989406a3d1b958ed63c5b96c706ab965dfd6930afc6289"
+original_class_hash = "0x54fa6f751a95a6fd2989406a3d1b958ed63c5b96c706ab965dfd6930afc6289"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/skeleton_smash-actions-7ca74759.json"
 reads = []
@@ -144,8 +144,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
-original_class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
+class_hash = "0x226564bddad7e9e3a18eb9ee98e36c1688db819da064e237b0fd53549d9594e"
+original_class_hash = "0x226564bddad7e9e3a18eb9ee98e36c1688db819da064e237b0fd53549d9594e"
 abi = "manifests/dev/deployment/abis/models/skeleton_smash-Run-4d03c68b.json"
 tag = "skeleton_smash-Run"
 qualified_path = "skeleton_smash::models::player::run"
@@ -159,6 +159,11 @@ key = true
 [[models.members]]
 name = "player"
 type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "room_id"
+type = "u32"
 key = false
 
 [[models.members]]
