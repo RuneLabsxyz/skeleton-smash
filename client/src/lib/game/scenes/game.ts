@@ -23,7 +23,7 @@ export class Game extends Scene {
         this.background.displayWidth = this.game.canvas.width; 
         this.background.displayHeight = this.game.canvas.height * 2; 
 
-    // Initialize Grid
+        // Initialize Grid
         this.grid = new Grid(this, this.cellSize);
 
         // Initialize Player

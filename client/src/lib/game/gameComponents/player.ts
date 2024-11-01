@@ -7,6 +7,7 @@ export class Player {
   position: { x: number; y: number };
   canMove: boolean;
   cellSize: number;
+  private animationTween?: Phaser.Tweens.Tween;
 
   constructor(scene: Scene, cellSize: number) {
     this.scene = scene;
@@ -73,7 +74,13 @@ export class Player {
     if (!this.canMove) return;
     console.log('Spawn function called');
     this.canMove = false;
+    this.animateSpawn();
     // TODO: request to torii
+  }
+
+  private animateSpawn() {
+    if (!this.sprite) return;
+    // TODO: animate spawn
   }
 
   updatePosition() {
