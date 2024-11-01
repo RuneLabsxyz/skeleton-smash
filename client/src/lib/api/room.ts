@@ -19,7 +19,7 @@ export async function Room(roomId: number): Promise<Readable<Room | null>> {
 
         // This is a bug in the current version of the SDK. We are unfortunately stuck with it for now.
         // dojo... plz fix
-        val.player_ids = val.player_ids.map(e => BigInt((e as any).value))
+        val.run_ids = val.run_ids.map(e => (e as any).value)
  
         // What we need to do is for every player in the room:
         // - Get the runs, nd check if they are still in the current room (if they are not, we can consider they already finished it)
