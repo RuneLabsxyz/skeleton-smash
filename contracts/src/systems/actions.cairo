@@ -29,6 +29,7 @@ mod actions {
             let initial_room = RoomTrait::new(0, 12, 0);
             set!(world, (room_list, initial_room));
         }
+
         fn spawn(ref world: IWorldDispatcher, seed: felt252) {
             // Get the player's address.
             let contract_address = get_caller_address();

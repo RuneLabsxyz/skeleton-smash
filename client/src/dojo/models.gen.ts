@@ -11,6 +11,9 @@ export type ContractComponents = Awaited<ReturnType<typeof defineContractCompone
 // Type definition for `dojo::model::layout::Layout` enum
 export type Layout = { type: 'Fixed'; value: RecsType.NumberArray; } | { type: 'Struct'; value: RecsType.StringArray; } | { type: 'Tuple'; value: RecsType.StringArray; } | { type: 'Array'; value: RecsType.StringArray; } | { type: 'ByteArray'; } | { type: 'Enum'; value: RecsType.StringArray; };
 
+// Type definition for `skeleton_smash::models::Direction` enum
+export type Direction = { type: 'None'; } | { type: 'Left'; } | { type: 'Right'; } | { type: 'Up'; } | { type: 'Down'; }
+
 export const LayoutDefinition = {
     type: RecsType.String,
     value: RecsType.String
