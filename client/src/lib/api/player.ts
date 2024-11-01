@@ -1,7 +1,8 @@
 import { componentValueStore } from "$src/dojo/componentValueStore";
 import type { Player } from "$src/dojo/models.gen";
-import { getDojo, getDojoContext } from "$src/stores/dojoStores";
-import { derived, writable, type Writable } from "svelte/store";
+import { getDojo, getDojoContext, accountStore } from "$src/stores/dojoStores";
+import { derived, readable, writable, type Readable, type Writable } from "svelte/store";
+import get from "./utils";
 
 async function Player(address: string) {
     // We consider they are unchangeable
@@ -12,12 +13,10 @@ async function Player(address: string) {
     return componentValueStore(clientComponents.Player, valueHash);
 }
 
-export const currentPlayer = writable<Player | null>(null, (set) => {
-    // Compute the poseidon hash
-    (async () => {
-        const [account, { }] = await getDojoContext();
-        (await Player(account.address)).subscribe(val => {
-            set(val);
-        })
-    })()
+export const currentPlayer: Readable<Player | null> = derived([accountStore], ([account], set) => {
+    if (account?.address == undefined) {
+        return;
+    }
+
+    get(Player(account?.address)).subscribe(set)
 })

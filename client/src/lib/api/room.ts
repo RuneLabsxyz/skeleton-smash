@@ -1,15 +1,17 @@
+import { playerPosition } from "$lib/components/players";
 import { componentValueStore } from "$src/dojo/componentValueStore";
-import type { Room } from "$src/dojo/models.gen";
+import type { Position, Room } from "$src/dojo/models.gen";
 import { getDojo } from "$src/stores/dojoStores";
-import { currentPlayerRun } from "./run";
+import { currentPlayerRun, Run } from "./run";
 import type { Readable } from "svelte/motion";
 import { derived } from "svelte/store";
+import get from "./utils";
 
 export type RoomState = Room & {
-
+    playerPositions: Position[]
 };
 
-export async function Room(roomId: number): Promise<Readable<Room | null>> {
+export async function Room(roomId: number): Promise<Readable<RoomState | null>> {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
     
@@ -19,27 +21,39 @@ export async function Room(roomId: number): Promise<Readable<Room | null>> {
 
         // This is a bug in the current version of the SDK. We are unfortunately stuck with it for now.
         // dojo... plz fix
-        val.run_ids = val.run_ids.map(e => (e as any).value)
+        let result: RoomState = {
+            playerPositions: [],
+            ...val
+        }
+        result.run_ids = result.run_ids.map(e => (e as any).value)
  
         // What we need to do is for every player in the room:
-        // - Get the runs, nd check if they are still in the current room (if they are not, we can consider they already finished it)
         // - Mark them as dead if they are
         // - Extract the position of the player in the run
         // - Export that in a map
 
-        set(val);
+        val.run_ids.forEach(async (runId, idx) => {
+            // Subscribe to the store, and update the current value whenever we get it:
+            (await Run(runId)).subscribe(run => {
+                if (run.room_id != roomId) {
+                    // We ignore the run if they are not currently in this room
+                    return;
+                }
+
+            })
+        })
+
+        set(result);
     })
 }
 
 export const currentPlayerRoom: Readable<Room | null> = derived([currentPlayerRun], ([playerRun], set) => {
-    (async () => {
-        if (playerRun == null) {
-            set(null);
-            return;
-        }
+    if (playerRun == null) {
+        set(null);
+        return;
+    }
 
-        (await Room(playerRun.room_id as number)).subscribe(val => {
-            set(val as Room);
-        })
-    })()
+    get(Room(playerRun.room_id as number)).subscribe(val => {
+        set(val as Room);
+    })
 });

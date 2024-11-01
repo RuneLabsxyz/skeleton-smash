@@ -4,6 +4,7 @@ import { currentPlayer } from "./player";
 import { dojoConfig } from "$src/dojoConfig";
 import { componentValueStore } from "$src/dojo/componentValueStore";
 import type { Direction as ModelDirection, Run } from "$src/dojo/models.gen";
+import get from "./utils";
 
 const SEED = () => BigInt(Math.floor(Math.random() * 1_000_000));
 
@@ -63,7 +64,7 @@ export async function doMove(direction: Direction) {
     const [account, { client }] = await getDojoContext();
 
     try {
-        await client.actions.move_player({
+        await client.actions.move({
             account,
             direction: getModelValue(direction),
             seed: SEED()
@@ -83,13 +84,13 @@ export async function Run(runId: number) {
 }
 
 export const currentPlayerRun: Readable<Run | null> = derived([currentPlayer], ([player], set) => {
-    (async () => {
-        if (!player?.run_id) {
-            set(null);
-            return;
-        }
-        (await Run(player?.run_id as number)).subscribe(val => {
-            set(val as Run);
-        })
-    })()
+    if (!player?.run_id) {
+        set(null);
+        return;
+    }
+
+
+    get(Run(player?.run_id as number)).subscribe(val => {
+        set(val as Run);
+    })
 });
