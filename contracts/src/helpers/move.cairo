@@ -1,9 +1,11 @@
+use dojo::world::IWorldDispatcher;
 use skeleton_smash::types::direction::Direction;
 use skeleton_smash::helpers::bitmap::{pow2_const};
 use skeleton_smash::consts::{WIDTH, HEIGHT};
+use skeleton_smash::helpers::check_kill::{kill_player};
 
 // this function will move the player in the room and return the new position
-fn move_player(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8) -> (u8, bool) {
+fn move_player(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8, room_id: u32, world: IWorldDispatcher) -> (u8, bool) {
     let mut is_exit = false;
     
     // Keep moving until we hit an edge or obstacle
@@ -12,10 +14,15 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
         if check_out_of_bounds(WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
+        // Check if next position is blocked in map
         if check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
+        // Check if next position is blocked by player
         if check_blocked(player_positions, WIDTH, HEIGHT, current_position, direction) {
+            // Kill the player
+            let kill_position = get_next_position(direction, current_position, WIDTH);
+            kill_player(kill_position, room_id, world);
             break; 
         }
 
@@ -88,6 +95,18 @@ fn check_blocked(grid: felt252, width: u8, height: u8, position: u8, direction: 
     let bit_position = pow2_const(next_position);
     let result = grid.try_into().unwrap() & bit_position;
     result != 0_u256
+}
+
+/// Get the next position in the specified direction.
+#[inline]
+fn get_next_position(direction: Direction, current_position: u8, width: u8) -> u8 {
+    match direction {
+        Direction::North => (current_position / width - 1) * width + current_position % width,
+        Direction::South => (current_position / width + 1) * width + current_position % width,
+        Direction::East => current_position / width * width + (current_position % width + 1),
+        Direction::West => current_position / width * width + (current_position % width - 1),
+        _ => current_position,
+    }
 }
 
 /// Check if there is obstacle in the specified direction.

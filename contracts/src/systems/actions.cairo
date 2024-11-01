@@ -4,7 +4,7 @@ use skeleton_smash::types::direction::Direction;
 trait IActions {
     fn spawn(ref world: IWorldDispatcher, seed: felt252);
     fn initialize(ref world: IWorldDispatcher);
-    fn move_player(ref world: IWorldDispatcher, direction: Direction, seed: felt252);
+    fn move(ref world: IWorldDispatcher, direction: Direction, seed: felt252);
     fn first_move(ref world: IWorldDispatcher, chosen_column: u8, seed: felt252);
 }
 
@@ -60,7 +60,7 @@ mod actions {
             set!(world, (room_list, room, run, player));
         }
 
-        fn move_player(ref world: IWorldDispatcher, direction: Direction, seed: felt252) {
+        fn move(ref world: IWorldDispatcher, direction: Direction, seed: felt252) {
             let contract_address = get_caller_address();
             let mut player = get!(world, contract_address, (Player));
             let mut room = get!(world, player.run_id, (Room));
@@ -72,7 +72,7 @@ mod actions {
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
             let (new_position, is_exit) = move_player(
-                direction, room.map, room.player_positions, position.pos
+                direction, room.map, room.player_positions, position.pos, room.room_id, world
             );
 
             if is_exit {
@@ -126,7 +126,7 @@ mod actions {
 
             // Move has to be North
             let (new_position, is_exit) = move_player(
-                Direction::North, room.map, room.player_positions, position.pos
+                Direction::North, room.map, room.player_positions, position.pos, room.room_id, world
             );
 
             if is_exit {
