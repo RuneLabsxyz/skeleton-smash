@@ -27,11 +27,7 @@ fn kill_player(kill_player_position: u8, room_id: u32, world: IWorldDispatcher) 
             player.run_history.append(run_id);
             player.run_id = 0;
 
-            //clear the player from the room bitmap
-            let mut new_room = room;
-            new_room.player_positions = clear_player_bitmap(new_room.player_positions, kill_player_position);
-
-            set!(world, (run, player, new_room));
+            set!(world, (run, player));
             break;
         }
         i += 1;
