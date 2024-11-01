@@ -1,4 +1,5 @@
 use skeleton_smash::types::direction::Direction;
+use skeleton_smash::consts::{WIDTH, HEIGHT};
 
 #[dojo::interface]
 trait IActions {
@@ -118,9 +119,9 @@ mod actions {
 
             assert(position.pos == 0, 'Invalid position');
 
-            assert(!check_obstacle(room.map, 14, 18, position.pos), 'Wall in the way');
+            assert(!check_obstacle(room.map, WIDTH, HEIGHT, position.pos), 'Wall in the way');
             assert(
-                !check_obstacle(room.player_positions, 14, 18, position.pos), 'Player in the way'
+                !check_obstacle(room.player_positions, WIDTH, HEIGHT, position.pos), 'Player in the way'
             );
 
             // Move has to be North
