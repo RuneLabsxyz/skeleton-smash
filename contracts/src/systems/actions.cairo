@@ -4,7 +4,7 @@ use skeleton_smash::types::direction::Direction;
 trait IActions {
     fn spawn(ref world: IWorldDispatcher, seed: felt252);
     fn initialize(ref world: IWorldDispatcher);
-    fn move_player(ref world: IWorldDispatcher, direction: Direction, seed: felt252);
+    fn move(ref world: IWorldDispatcher, direction: Direction, seed: felt252);
     fn first_move(ref world: IWorldDispatcher, chosen_column: u8, seed: felt252);
 }
 
@@ -17,6 +17,7 @@ mod actions {
     use skeleton_smash::helpers::move::{move_player, check_obstacle, check_out_of_bounds};
     use skeleton_smash::types::direction::Direction;
     use skeleton_smash::helpers::bitmap::{set_player_bitmap, clear_player_bitmap};
+    use skeleton_smash::consts::{WIDTH, HEIGHT};
 
 
     #[abi(embed_v0)]
@@ -28,6 +29,7 @@ mod actions {
             let initial_room = RoomTrait::new(0, 12, 0);
             set!(world, (room_list, initial_room));
         }
+
         fn spawn(ref world: IWorldDispatcher, seed: felt252) {
             // Get the player's address.
             let contract_address = get_caller_address();
@@ -50,8 +52,8 @@ mod actions {
                 room = RoomTrait::new(room_id, seed, 0);
             }
 
-            room = RoomTrait::add_player(ref room, contract_address);
             let run_id = world.uuid();
+            room = RoomTrait::add_player(ref room, run_id);
             let run = RunTrait::new(run_id, contract_address, 0, room.room_id);
 
             player = PlayerTrait::set_run_id(ref player, run_id);
@@ -59,7 +61,7 @@ mod actions {
             set!(world, (room_list, room, run, player));
         }
 
-        fn move_player(ref world: IWorldDispatcher, direction: Direction, seed: felt252) {
+        fn move(ref world: IWorldDispatcher, direction: Direction, seed: felt252) {
             let contract_address = get_caller_address();
             let mut player = get!(world, contract_address, (Player));
             let mut room = get!(world, player.run_id, (Room));
@@ -71,7 +73,7 @@ mod actions {
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
             let (new_position, is_exit) = move_player(
-                direction, room.map, room.player_positions, position.pos
+                direction, room.map, room.player_positions, position.pos, room.room_id, world
             );
 
             if is_exit {
@@ -90,7 +92,7 @@ mod actions {
                     room_id = *room_list.room_max_id_for_level[new_level];
                     room = RoomTrait::new(room_id, seed, new_level);
                 }
-                room = RoomTrait::add_player(ref room, contract_address);
+                room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;
                 run.move_count = 0;
                 run.room_id = room_id;
@@ -118,14 +120,14 @@ mod actions {
 
             assert(position.pos == 0, 'Invalid position');
 
-            assert(!check_obstacle(room.map, 14, 18, position.pos), 'Wall in the way');
+            assert(!check_obstacle(room.map, WIDTH, HEIGHT, position.pos), 'Wall in the way');
             assert(
-                !check_obstacle(room.player_positions, 14, 18, position.pos), 'Player in the way'
+                !check_obstacle(room.player_positions, WIDTH, HEIGHT, position.pos), 'Player in the way'
             );
 
             // Move has to be North
             let (new_position, is_exit) = move_player(
-                Direction::North, room.map, room.player_positions, position.pos
+                Direction::North, room.map, room.player_positions, position.pos, room.room_id, world
             );
 
             if is_exit {
@@ -144,7 +146,7 @@ mod actions {
                     room_id = *room_list.room_max_id_for_level[new_level];
                     room = RoomTrait::new(room_id, seed, new_level);
                 }
-                room = RoomTrait::add_player(ref room, contract_address);
+                room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;
                 run.move_count = 0;
                 run.room_id = room_id;

@@ -27,12 +27,13 @@ struct Run {
     room_id: u32,
     level: u32, // current level
     move_count: u32, // remaining moves for that level
+    is_dead: bool, // if true, the player is dead and cannot move
 }
 
 #[generate_trait]
 impl RunImpl of RunTrait {
     fn new(run_id: u32, player: ContractAddress, level: u32, room_id: u32) -> Run {
-        Run { run_id, player, level, room_id, move_count: 0 }
+        Run { run_id, player, level, room_id, move_count: 0, is_dead: false }
     }
 }
 
