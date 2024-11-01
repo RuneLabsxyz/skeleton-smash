@@ -2,6 +2,8 @@
     import { HEIGHT, isSet, WIDTH } from "$lib/logic/feltUtils";
     import { testMap } from "../test";
     import Wall from "./cell/Wall.svelte";
+
+    // Get the current room for player (fetch the player by the burner)
 </script>
 
 <div class="flex flex-col gap-1 w-min">
