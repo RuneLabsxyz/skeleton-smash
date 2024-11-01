@@ -1,42 +1,61 @@
 <script lang="ts">
-    import Grid from "$lib/components/Grid.svelte";
-    import { moveRequested } from "$lib/components/players";
-    import Loading from "$lib/components/Loading.svelte";
-    import { getDojoContext } from "$stores/dojoStores";
-    import { currentPlayer } from "$lib/api/player";
-
-    let loading = $derived($moveRequested);
-
-    import { currentPlayerRun, startRun } from "$lib/api/run";
-    import { currentPlayerRoom } from "$lib/api/room";
-
-    currentPlayerRoom.subscribe((e) => console.log("room: ", e));
+  let startGame = false;
 </script>
 
-<div class="w-screen flex h-screen justify-center items-center flex-col">
-    <h1 class="font-bold text-3xl mb-5">
-        Skeleton Bash ({$currentPlayer?.contract_address})
-    </h1>
-    <Grid></Grid>
+{#if !startGame}
+  <div class="title-screen">
+    <h1 class="title">SKELETON SMASH</h1>
+    <button 
+      class="start-button"
+      on:click={() => {
+        startGame = true;
+        window.location.href = '/game';
+      }}
+    >
+      Start Playing
+    </button>
+  </div>
+{/if}
 
-    <span>
-        Working on runId: {$currentPlayerRun?.run_id}, so we are in the room {$currentPlayerRun?.room_id}
-    </span>
-    <span>
-        The room {$currentPlayerRoom?.room_id} exists, and we have the following
-        players in it: {JSON.stringify(
-            $currentPlayerRoom?.player_ids.map(
-                (e) => "0x" + e.toString(16).slice(0, 5) + "...",
-            ),
-        )}
-    </span>
-    <button onclick={() => startRun()}>Start a run</button>
-</div>
+<style>
+  .title-screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+  }
 
-<div
-    class="absolute top-0 right-0 w-screen h-screen flex justify-end items-start p-4"
->
-    {#if loading}
-        <Loading />
-    {/if}
-</div>
+  .title {
+    font-size: 64px;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 50px;
+    animation: glow 1.5s ease-in-out infinite alternate;
+  }
+
+  .start-button {
+    padding: 15px 40px;
+    font-size: 24px;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .start-button:hover {
+    transform: scale(1.1);
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+    }
+    to {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+    }
+  }
+</style>
