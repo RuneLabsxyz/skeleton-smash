@@ -14,6 +14,7 @@ mod helpers {
     mod move;
     mod bitmap;
     mod power;
+    mod check_kill;
 }
 
 mod types {
