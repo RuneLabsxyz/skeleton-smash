@@ -1,28 +1,27 @@
 use skeleton_smash::types::direction::Direction;
 use skeleton_smash::helpers::bitmap::{pow2_const};
+use skeleton_smash::consts::{WIDTH, HEIGHT};
 
 // this function will move the player in the room and return the new position
 fn move_player(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8) -> (u8, bool) {
-    let width = 14;
-    let height = 18;    
     let mut is_exit = false;
     
     // Keep moving until we hit an edge or obstacle
     loop {
         // Check if next position is blocked in map or player_positions
-        if check_out_of_bounds(width, height, current_position, direction) {
+        if check_out_of_bounds(WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
-        if check_blocked(map, width, height, current_position, direction) {
+        if check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
-        if check_blocked(player_positions, width, height, current_position, direction) {
+        if check_blocked(player_positions, WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
 
-        current_position = apply_move(direction, current_position, width);
+        current_position = apply_move(direction, current_position, WIDTH);
 
-        if check_exit(width, height, current_position, direction) {
+        if check_exit(WIDTH, HEIGHT, current_position, direction) {
             is_exit = true;
             break;
         }

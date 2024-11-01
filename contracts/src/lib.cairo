@@ -19,3 +19,5 @@ mod helpers {
 mod types {
     mod direction;
 }
+
+mod consts;

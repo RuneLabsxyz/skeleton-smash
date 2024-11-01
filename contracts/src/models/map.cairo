@@ -1,5 +1,6 @@
 use starknet::ContractAddress;
 use origami_map::map::{MapTrait};
+use skeleton_smash::consts::{WIDTH, HEIGHT};
 
 #[derive(Drop, Serde, Introspect)]
 #[dojo::model]
@@ -45,7 +46,7 @@ struct Room {
 #[generate_trait]
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
-        let mut cave_map = MapTrait::new_cave(14, 18, 3, seed);
+        let mut cave_map = MapTrait::new_cave(WIDTH, HEIGHT, 3, seed);
         let position = 245;
         let order = 1;
         cave_map.open_with_corridor(position, order);
