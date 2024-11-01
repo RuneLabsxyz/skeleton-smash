@@ -1,12 +1,19 @@
 <script lang="ts">
     import Grid from "$lib/components/Grid.svelte";
     import { currentPlayerRoom } from "$lib/api/room";
+    import { currentPlayerRun } from "$lib/api/run";
+    import { type Run } from "$src/dojo/models.gen";
     import { type Felt } from "$lib/logic/feltUtils";
 
     let room_map: Felt | null = $state(null);
+    let run: Run | null = $state(null);
 
     currentPlayerRoom.subscribe((e) => {
         room_map = e?.map ? { val: BigInt(String(e.map)) } : null;
+    });
+
+    currentPlayerRun.subscribe((e) => {
+        run = e;
     });
 
 </script>
