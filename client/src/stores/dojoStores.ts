@@ -1,6 +1,6 @@
 import { dojoConfig } from '../dojoConfig'
 import { setup } from '$dojo/setup'
-import { writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { Account } from 'starknet'
 
 type SetupResult = Awaited<ReturnType<typeof setup>>
@@ -8,8 +8,16 @@ type SetupResult = Awaited<ReturnType<typeof setup>>
 export const dojoStore = writable<SetupResult>()
 export const accountStore = writable<Account | null>()
 export const isSetup = writable(false)
+export const settingUp = writable(false);
 
 export async function initializeStore() {
+
+  if (get(settingUp)) {
+    console.warn("Concurrent setting up!");
+    return await getDojo();
+  }
+  settingUp.set(true);
+
   try {
     console.log('Initializing store...')
     const result = await setup(dojoConfig)
@@ -26,6 +34,8 @@ export async function initializeStore() {
   } catch (error) {
     console.error('Failed to initialize store:', error)
     isSetup.set(false)
+  } finally {
+    settingUp.set(false)
   }
 }
 
@@ -33,10 +43,12 @@ export async function initializeStore() {
 export async function getDojo(): Promise<SetupResult> {
   return new Promise((ok, err) => {
     dojoStore.subscribe(val => {
-      ok(val);
+      if (val) {
+        ok(val);
+      }
     })
     isSetup.subscribe((val) => {
-      if (!val) {
+      if (!val && !get(settingUp)) {
         err("Failed to initalize store.");
       }
     })
