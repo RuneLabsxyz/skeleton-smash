@@ -1,5 +1,5 @@
 import { felt } from "./logic/feltUtils";
-
+import { Direction } from "./components/players";
 
 export const testMap = felt(
     `00000000000000
@@ -42,3 +42,9 @@ export const testPlayers = felt(
     00000000000000
     01000000000000`
 );
+
+export async function fakeMoveRequest(direction: Direction) {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    console.log(`Moved ${direction}`);
+}

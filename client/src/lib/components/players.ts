@@ -1,32 +1,40 @@
 import { writable } from "svelte/store";
 import { get } from "svelte/store";
+import { fakeMoveRequest } from "../test";
 
 export let playerPosition = writable(15);
 
-enum Direction {
+export let moveRequested = writable(false);
+
+export enum Direction {
     North = -14,
     South = 14,
     West = -1,
     East = 1
 }
 
-function movePlayer(direction: Direction) {
-    playerPosition.set(get(playerPosition) + direction);
-}
-
-export function handleKeydown(event: KeyboardEvent) {
+export async function handleKeydown(event: KeyboardEvent) {
     switch (event.key) {
         case "ArrowUp":
-            movePlayer(Direction.North);
+            await movePlayer(Direction.North);
             break;
         case "ArrowDown":
-            movePlayer(Direction.South);
+            await movePlayer(Direction.South);
             break;
         case "ArrowLeft":
-            movePlayer(Direction.West);
+            await movePlayer(Direction.West);
             break;
         case "ArrowRight":
-            movePlayer(Direction.East);
+            await movePlayer(Direction.East);
             break;
     }
 }
+
+async function movePlayer(direction: Direction) {
+    if (get(moveRequested)) {
+        return;
+    }
+    moveRequested.set(true);
+    await fakeMoveRequest(direction);
+}
+
