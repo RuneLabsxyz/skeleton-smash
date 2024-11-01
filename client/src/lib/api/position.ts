@@ -5,7 +5,7 @@ import { derived, readable, writable, type Readable, type Writable } from "svelt
 import { currentPlayerRun } from "./run";
 import get from "./utils";
 
-async function Position(runId: number): Promise<Readable<PositionTy | null>> {
+export async function Position(runId: number): Promise<Readable<PositionTy | null>> {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
     const valueHash = torii.poseidonHash([String(runId)]);

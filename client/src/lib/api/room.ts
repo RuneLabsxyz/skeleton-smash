@@ -6,9 +6,10 @@ import { currentPlayerRun, Run } from "./run";
 import type { Readable } from "svelte/motion";
 import { derived } from "svelte/store";
 import get from "./utils";
+import { Position as PositionStore } from "./position";
 
 export type RoomState = Room & {
-    playerPositions: Position[]
+    playerPositions: {[runId: string]: Position}
 };
 
 export async function Room(roomId: number): Promise<Readable<RoomState | null>> {
@@ -22,7 +23,7 @@ export async function Room(roomId: number): Promise<Readable<RoomState | null>> 
         // This is a bug in the current version of the SDK. We are unfortunately stuck with it for now.
         // dojo... plz fix
         let result: RoomState = {
-            playerPositions: [],
+            playerPositions: {},
             ...val
         }
         result.run_ids = result.run_ids.map(e => (e as any).value)
@@ -32,14 +33,27 @@ export async function Room(roomId: number): Promise<Readable<RoomState | null>> 
         // - Extract the position of the player in the run
         // - Export that in a map
 
-        val.run_ids.forEach(async (runId, idx) => {
+        val.run_ids.forEach((runId, idx) => {
             // Subscribe to the store, and update the current value whenever we get it:
-            (await Run(runId)).subscribe(run => {
-                if (run.room_id != roomId) {
-                    // We ignore the run if they are not currently in this room
-                    return;
-                }
+            get(Run(runId)).subscribe(run => {
+                if (run == null || run.room_id != roomId) {
+                    // We ignore the run if they are not currently in this room,
+                    // (or if we do not have it yet)
+                    delete result.playerPositions[runId];
 
+                    set(result);
+                    return;
+                }   
+
+                get(PositionStore(runId)).subscribe(newPos => {
+                    if (newPos != null && newPos.pos != 0) {
+                        result.playerPositions[runId] = newPos;
+                    } else {
+                        delete result.playerPositions[runId];
+                    }
+                    
+                    set(result);
+                })
             })
         })
 
