@@ -23,14 +23,14 @@ export async function handleKeydown(event: KeyboardEvent) {
         case "ArrowUp":
             await movePlayer(Direction.North);
             break;
+        case "ArrowRight":
+            await movePlayer(Direction.East);
+            break;
         case "ArrowDown":
             await movePlayer(Direction.South);
             break;
         case "ArrowLeft":
             await movePlayer(Direction.West);
-            break;
-        case "ArrowRight":
-            await movePlayer(Direction.East);
             break;
     }
 }
@@ -45,6 +45,7 @@ async function movePlayer(direction: Direction) {
         return;
     }
     moveRequested.set(true);
+    console.log("Moving in direction: ", direction);
     await doMove(direction);
 }
 

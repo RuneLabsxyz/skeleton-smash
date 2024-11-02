@@ -50,11 +50,11 @@ function getModelValue(direction: Direction): ModelDirection {
             return {type: "None"}
         case Direction.North:
             return {type: "North"}
-        case Direction.South:
-            return {type: "East"}
-        case Direction.West:
-            return {type: "South"}
         case Direction.East:
+            return {type: "East"}
+        case Direction.South:
+            return {type: "South"}
+        case Direction.West:
             return {type: "West"}
     }
 }
