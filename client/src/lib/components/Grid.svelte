@@ -3,14 +3,13 @@
     import { testPlayers } from "../test";
     import Wall from "./cell/Wall.svelte";
     import Player from "./cell/Player.svelte";
-    import { playerPosition, handleKeydown } from "./players";
+    import { playerPosition, playerStartPosition, handleKeydown } from "./players";
     import { onMount } from "svelte";
     import { type Felt } from "$lib/logic/feltUtils";
     import { type Run } from "$src/dojo/models.gen";
 
     let player = $derived($playerPosition);
-
-    let playerStartPosition: number | null = $state(null);
+    let playerStart = $derived($playerStartPosition);
 
     let { map, run } = $props<{
         map: Felt | null;
@@ -18,8 +17,8 @@
     }>();
 
     $effect(() => {
-        if (run) {
-            playerStartPosition = 7;
+        if (run.move_count == 0) {
+            playerStartPosition.set(7);
         }
     });
 
@@ -47,10 +46,10 @@
     {/each}
     <div class="h-8 bg-gray-200 flex items-center justify-center relative">
         SAFE ZONE
-        {#if playerStartPosition !== null}
+        {#if playerStart !== null}
             <div 
                 class="w-8 aspect-square bg-red-500" 
-                style="position: absolute; left: calc({playerStartPosition} * 2.25rem);"
+                style="position: absolute; left: calc({playerStart} * 2.25rem);"
             >
             </div>
         {/if}
