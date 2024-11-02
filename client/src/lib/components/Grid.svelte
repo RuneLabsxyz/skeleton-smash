@@ -15,6 +15,7 @@
     currentPlayerPosition.subscribe((e) => {
         if (e) {
             playerPosition.set(e.pos);
+            console.log("Player position: ", e.pos);
         }
     });
 
@@ -40,12 +41,12 @@
     {#each new Array(18) as _, col}
         <div class="flex flex-row gap-1">
             {#each new Array(14) as _, row}
-                {#if isSet(map, HEIGHT - 1 - col, WIDTH - row)}
+                {#if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
+                    <Player current={true} />
+                {:else if isSet(map, HEIGHT - 1 - col, WIDTH - row)}
                     <Wall />
                 {:else if isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)}
                     <Player current={false} />
-                {:else if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
-                    <Player current={true} />
                 {:else}
                     <div class="w-8 aspect-square">
                     </div>

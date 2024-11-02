@@ -120,9 +120,9 @@ mod actions {
 
             assert(position.pos == 0, 'Invalid position');
 
-            assert(!check_obstacle(room.map, WIDTH, HEIGHT, chosen_column), 'Wall in the way');
+            assert(!check_obstacle(room.map, chosen_column), 'Wall in the way');
             assert(
-                !check_obstacle(room.player_positions, WIDTH, HEIGHT, chosen_column), 'Player in the way'
+                !check_obstacle(room.player_positions, chosen_column), 'Player in the way'
             );
 
             // Move has to be North
