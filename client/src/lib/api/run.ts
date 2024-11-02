@@ -4,6 +4,7 @@ import { currentPlayer } from "./player";
 import { dojoConfig } from "$src/dojoConfig";
 import { componentValueStore } from "$src/dojo/componentValueStore";
 import type { Direction as ModelDirection, Run } from "$src/dojo/models.gen";
+import get from "./utils";
 
 const SEED = () => BigInt(Math.floor(Math.random() * 1_000_000));
 
@@ -77,19 +78,19 @@ export async function Run(runId: number) {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
     const valueHash = torii.poseidonHash([String(runId)]);
-
+    
     // return a component value store of the object:
     return componentValueStore(clientComponents.Run, valueHash);
 }
 
 export const currentPlayerRun: Readable<Run | null> = derived([currentPlayer], ([player], set) => {
-    (async () => {
-        if (!player?.run_id) {
-            set(null);
-            return;
-        }
-        (await Run(player?.run_id as number)).subscribe(val => {
-            set(val as Run);
-        })
-    })()
+    if (!player?.run_id) {
+        set(null);
+        return;
+    }
+
+
+    get(Run(Number(player?.run_id))).subscribe(val => {
+        set(val as Run);
+    })
 });
