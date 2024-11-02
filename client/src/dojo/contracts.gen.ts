@@ -62,7 +62,7 @@ export async function setupWorld(provider: DojoProvider) {
                     {
                         contractName: contract_name,
                         entrypoint: "move",
-                        calldata: [props.direction,
+                        calldata: [["None", "North", "East", "South", "West"].indexOf(props.direction.type),
                 props.seed],
                     },
                     "skeleton_smash"
@@ -72,7 +72,6 @@ export async function setupWorld(provider: DojoProvider) {
                 throw error;
             }
         };
-            
 
     
         // Call the `first_move` system with the specified Account and calldata

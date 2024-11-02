@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import { get } from "svelte/store";
 import { fakeMoveRequest } from "../test";
-import { doFirstMove } from "$lib/api/run";
+import { doFirstMove, doMove } from "$lib/api/run";
 
 
 export let playerPosition = writable<number | null>(null);
@@ -11,10 +11,11 @@ export let playerStartPosition = writable<number | null>(null);
 export let moveRequested = writable(false);
 
 export enum Direction {
-    North = -14,
-    South = 14,
-    West = -1,
-    East = 1
+    None,
+    North,
+    East,
+    South,
+    West,
 }
 
 export async function handleKeydown(event: KeyboardEvent) {
@@ -44,7 +45,7 @@ async function movePlayer(direction: Direction) {
         return;
     }
     moveRequested.set(true);
-    await fakeMoveRequest(direction);
+    await doMove(direction);
 }
 
 async function spawnPlayer(direction: Direction) {

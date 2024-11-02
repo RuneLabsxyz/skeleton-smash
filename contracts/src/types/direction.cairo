@@ -1,12 +1,8 @@
-#[derive(Drop, Copy, Serde)]
+#[derive(Copy, Drop, Serde, Introspect)]
 pub enum Direction {
     None,
-    NorthWest,
     North,
-    NorthEast,
     East,
-    SouthEast,
     South,
-    SouthWest,
     West,
 }

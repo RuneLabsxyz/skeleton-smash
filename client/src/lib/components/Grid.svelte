@@ -7,9 +7,16 @@
     import { onMount } from "svelte";
     import { type Felt } from "$lib/logic/feltUtils";
     import { type Run } from "$src/dojo/models.gen";
+    import { currentPlayerPosition } from "$lib/api/position";
 
     let player = $derived($playerPosition);
     let playerStart = $derived($playerStartPosition);
+
+    currentPlayerPosition.subscribe((e) => {
+        if (e) {
+            playerPosition.set(e.pos);
+        }
+    });
 
     let { map, run } = $props<{
         map: Felt | null;
@@ -37,7 +44,7 @@
                     <Wall />
                 {:else if isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)}
                     <Player current={false} />
-                {:else if player === col * WIDTH + row}
+                {:else if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
                     <Player current={true} />
                 {:else}
                     <div class="w-8 aspect-square">

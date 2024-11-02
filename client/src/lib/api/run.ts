@@ -37,25 +37,25 @@ export async function doFirstMove(column: number) {
 }
 
 enum Direction {
-    NONE,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    None,
+    North,
+    East,
+    South,
+    West,
 }
 
 function getModelValue(direction: Direction): ModelDirection {
     switch (direction) {
-        case Direction.NONE:
+        case Direction.None:
             return {type: "None"}
-        case Direction.UP:
-            return {type: "Up"}
-        case Direction.DOWN:
-            return {type: "Down"}
-        case Direction.LEFT:
-            return {type: "Left"}
-        case Direction.RIGHT:
-            return {type: "Right"}
+        case Direction.North:
+            return {type: "North"}
+        case Direction.South:
+            return {type: "East"}
+        case Direction.West:
+            return {type: "South"}
+        case Direction.East:
+            return {type: "West"}
     }
 }
 

@@ -1,4 +1,13 @@
 use starknet::ContractAddress;
+use skeleton_smash::types::direction::Direction;
+
+#[derive(Drop, Serde, Introspect)]
+#[dojo::model]
+struct Movement {
+    #[key]
+    run_id: u32,
+    direction: Direction,
+}
 
 #[derive(Drop, Serde, Introspect)]
 #[dojo::model]
