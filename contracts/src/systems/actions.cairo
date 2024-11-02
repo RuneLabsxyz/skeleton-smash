@@ -64,9 +64,9 @@ mod actions {
         fn move(ref world: IWorldDispatcher, direction: Direction, seed: felt252) {
             let contract_address = get_caller_address();
             let mut player = get!(world, contract_address, (Player));
-            let mut room = get!(world, player.run_id, (Room));
-            let mut position = get!(world, player.run_id, (Position));
             let mut run = get!(world, player.run_id, (Run));
+            let mut room = get!(world, run.room_id, (Room));
+            let mut position = get!(world, player.run_id, (Position));
 
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
@@ -112,9 +112,9 @@ mod actions {
         fn first_move(ref world: IWorldDispatcher, chosen_column: u8, seed: felt252) {
             let contract_address = get_caller_address();
             let mut player = get!(world, contract_address, (Player));
-            let mut room = get!(world, player.run_id, (Room));
-            let mut position = get!(world, player.run_id, (Position));
             let mut run = get!(world, player.run_id, (Run));
+            let mut room = get!(world, run.room_id, (Room));
+            let mut position = get!(world, player.run_id, (Position));
 
 
             assert(!check_obstacle(room.map, chosen_column), 'Wall in the way');
