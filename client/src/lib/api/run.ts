@@ -47,15 +47,15 @@ enum Direction {
 function getModelValue(direction: Direction): ModelDirection {
     switch (direction) {
         case Direction.None:
-            return {type: "None"}
+            return { type: "None" }
         case Direction.North:
-            return {type: "North"}
+            return { type: "North" }
         case Direction.South:
-            return {type: "East"}
+            return { type: "East" }
         case Direction.West:
-            return {type: "South"}
+            return { type: "South" }
         case Direction.East:
-            return {type: "West"}
+            return { type: "West" }
     }
 }
 
@@ -78,7 +78,7 @@ export async function Run(runId: number) {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
     const valueHash = torii.poseidonHash([String(runId)]);
-    
+
     // return a component value store of the object:
     return componentValueStore(clientComponents.Run, valueHash);
 }
