@@ -44,7 +44,7 @@
                     <Wall />
                 {:else if isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)}
                     <Player current={false} />
-                {:else if $playerPosition === col * WIDTH + row}
+                {:else if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
                     <Player current={true} />
                 {:else}
                     <div class="w-8 aspect-square">
