@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { currentPlayerRun, startRun } from "$lib/api/run";
+    import { startRun } from "$lib/api/run";
     import { currentPlayerRoom } from "$lib/api/room";
 
 
@@ -14,8 +14,8 @@
         window.location.href = `/game/${roomId}`;
     })
 
-    async function startGame() {
-        await startRun();
+    function startGame() {
+        startRun();
     }
 
 </script>
