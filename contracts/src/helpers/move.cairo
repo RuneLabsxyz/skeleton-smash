@@ -133,12 +133,45 @@ fn check_exit(width: u8, height: u8, position: u8, direction: Direction) -> bool
     bit_position == 245_u256 && is_north
 }
 
+//for tests
+fn move_player_test(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8, room_id: u32) -> (u8, bool) {
+    let mut is_exit = false;
+    
+    // Keep moving until we hit an edge or obstacle
+    loop {
+        // Check if next position is blocked in map or player_positions
+        if check_out_of_bounds(WIDTH, HEIGHT, current_position, direction) {
+            break; 
+        }
+        // Check if next position is blocked in map
+        if check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
+            break; 
+        }
+        // Check if next position is blocked by player
+        if check_blocked(player_positions, WIDTH, HEIGHT, current_position, direction) {
+            // Kill the player
+            let kill_position = get_next_position(direction, current_position, WIDTH);
+            break; 
+        }
+
+        current_position = apply_move(direction, current_position, WIDTH);
+
+        if check_exit(WIDTH, HEIGHT, current_position, direction) {
+            is_exit = true;
+            break;
+        }
+    };
+    
+    // Return final position
+    return (current_position, is_exit);
+}
+
 
 #[cfg(test)]
 mod tests {
     use skeleton_smash::types::direction::Direction;
     use skeleton_smash::consts::{WIDTH, HEIGHT};
-    use skeleton_smash::helpers::move::{apply_move, check_blocked, check_exit, check_obstacle, get_next_position, check_out_of_bounds};
+    use skeleton_smash::helpers::move::{apply_move, check_blocked, check_exit, check_obstacle, get_next_position, check_out_of_bounds, move_player_test};
 
     #[test]
     fn test_apply_move() {
@@ -221,5 +254,25 @@ mod tests {
         let wall_grid_2 = 8388608; // aka 24th bit
         let is_obstacle_2 = check_obstacle(wall_grid_2, 23); // bit pos - 1 as we start counting from 0
         assert_eq!(is_obstacle_2, true);
+    }
+
+    /// direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8, room_id: u32
+    #[test]
+    fn test_move_player_test() {
+        let (new_position, is_exit) = move_player_test(Direction::North, 0, 0, 0, 0);
+        assert_eq!(new_position, 251-13);
+        assert_eq!(is_exit, false);
+    }
+    #[test]
+    fn test_move_player_test_2() {
+        let (new_position, is_exit) = move_player_test(Direction::East, 0, 0, 251-13, 0);
+        assert_eq!(new_position, 251);
+        assert_eq!(is_exit, false);
+    }
+    #[test]
+    fn test_move_player_test_3() {
+        let (new_position, is_exit) = move_player_test(Direction::South, 0, 0, 251, 0);
+        assert_eq!(new_position, 13);
+        assert_eq!(is_exit, false);
     }
 }

@@ -68,8 +68,6 @@ mod actions {
             let mut position = get!(world, player.run_id, (Position));
             let mut run = get!(world, player.run_id, (Run));
 
-            assert(position.pos != 0, 'Invalid position');
-
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
             let (new_position, is_exit) = move_player(
@@ -118,7 +116,6 @@ mod actions {
             let mut position = get!(world, player.run_id, (Position));
             let mut run = get!(world, player.run_id, (Run));
 
-            assert(position.pos == 0, 'Invalid position');
 
             assert(!check_obstacle(room.map, chosen_column), 'Wall in the way');
             assert(
