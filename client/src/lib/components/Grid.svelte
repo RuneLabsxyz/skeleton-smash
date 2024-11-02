@@ -19,6 +19,8 @@
     $effect(() => {
         if (run.move_count == 0) {
             playerStartPosition.set(7);
+        } else {
+            playerStartPosition.set(null);
         }
     });
 
