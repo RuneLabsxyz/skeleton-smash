@@ -1,0 +1,8 @@
+tag = "skeleton_smash-actions"
+writes = [
+    "skeleton_smash-Player",
+    "skeleton_smash-Position",
+    "skeleton_smash-Room",
+    "skeleton_smash-RoomList",
+    "skeleton_smash-Run",
+]
