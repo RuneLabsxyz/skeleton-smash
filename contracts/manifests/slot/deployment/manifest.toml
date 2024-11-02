@@ -1,17 +1,17 @@
 [world]
 kind = "WorldContract"
-class_hash = "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce"
-original_class_hash = "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce"
+class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
+original_class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
 abi = "manifests/slot/deployment/abis/dojo-world.json"
-address = "0x105c6c57af576667003fdeb6cc98bbc846acfc818517f2124ddd001513ab51c"
-transaction_hash = "0x25251e7a350065fbab906d747d64c9b8fed948f884125c6d9ae862ff59a67ea"
+address = "0x2a9b2d8dc43c75312bf14df3f83fcd68b2d4fd6945d91acccb6e9a669e56fad"
+transaction_hash = "0x5f499442f691c27f426679311179b6d8fc345166a466e2e752a704048ec8999"
 block_number = 3
 seed = "skeleton_smash"
 manifest_name = "dojo-world"
 
 [world.metadata]
 profile_name = "slot"
-rpc_url = "https://api.cartridge.gg/x/skeleton-smash/katana"
+rpc_url = "https://api.cartridge.gg/x/skelton-smash/katana"
 
 [base]
 kind = "Class"
@@ -23,19 +23,25 @@ manifest_name = "dojo-base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x259dff8c14c32480bdfe95f2d35240ed1ba17fff6c7ce8ef2724ac43ec3a7f1"
-class_hash = "0x5b7770ac6ebad9ab5c8deb1e7a956ec8147b11c505607ba44d8efb01e83d60e"
-original_class_hash = "0x5b7770ac6ebad9ab5c8deb1e7a956ec8147b11c505607ba44d8efb01e83d60e"
+address = "0x64a81532dec0aae2c41da0d4556b3727ab13231b77a4defdc3f480ac1dae8eb"
+class_hash = "0x5de2a420890f83b257fe7759adeffcb78405b4f611364bf15f274fb9c55e222"
+original_class_hash = "0x5de2a420890f83b257fe7759adeffcb78405b4f611364bf15f274fb9c55e222"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/slot/deployment/abis/contracts/skeleton_smash-actions-7ca74759.json"
 reads = []
-writes = []
+writes = [
+    "skeleton_smash-Player",
+    "skeleton_smash-Position",
+    "skeleton_smash-Room",
+    "skeleton_smash-RoomList",
+    "skeleton_smash-Run",
+]
 init_calldata = []
 tag = "skeleton_smash-actions"
 systems = [
     "initialize",
     "spawn",
-    "move_player",
+    "move",
     "first_move",
 ]
 manifest_name = "skeleton_smash-actions-7ca74759"
@@ -85,8 +91,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x6bf422593059150b234bb6ec3ae46cdbd906fbc2bdcb5464a3a42716a44679"
-original_class_hash = "0x6bf422593059150b234bb6ec3ae46cdbd906fbc2bdcb5464a3a42716a44679"
+class_hash = "0x36873160f677497c6e7571712ec2ab6ea4c602fff8936d5ec7df902f6a1a910"
+original_class_hash = "0x36873160f677497c6e7571712ec2ab6ea4c602fff8936d5ec7df902f6a1a910"
 abi = "manifests/slot/deployment/abis/models/skeleton_smash-Room-164aae80.json"
 tag = "skeleton_smash-Room"
 qualified_path = "skeleton_smash::models::map::room"
@@ -113,8 +119,8 @@ type = "u32"
 key = false
 
 [[models.members]]
-name = "player_ids"
-type = "Array<ContractAddress>"
+name = "run_ids"
+type = "Array<u32>"
 key = false
 
 [[models]]
@@ -138,8 +144,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
-original_class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
+class_hash = "0x695817357de69aa5831f65f62c8e3876f7325ec9747fe0bf44865e50ab72424"
+original_class_hash = "0x695817357de69aa5831f65f62c8e3876f7325ec9747fe0bf44865e50ab72424"
 abi = "manifests/slot/deployment/abis/models/skeleton_smash-Run-4d03c68b.json"
 tag = "skeleton_smash-Run"
 qualified_path = "skeleton_smash::models::player::run"
@@ -156,6 +162,11 @@ type = "ContractAddress"
 key = false
 
 [[models.members]]
+name = "room_id"
+type = "u32"
+key = false
+
+[[models.members]]
 name = "level"
 type = "u32"
 key = false
@@ -163,4 +174,9 @@ key = false
 [[models.members]]
 name = "move_count"
 type = "u32"
+key = false
+
+[[models.members]]
+name = "is_dead"
+type = "bool"
 key = false

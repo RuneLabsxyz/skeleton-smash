@@ -120,14 +120,14 @@ mod actions {
 
             assert(position.pos == 0, 'Invalid position');
 
-            assert(!check_obstacle(room.map, WIDTH, HEIGHT, position.pos), 'Wall in the way');
+            assert(!check_obstacle(room.map, WIDTH, HEIGHT, chosen_column), 'Wall in the way');
             assert(
-                !check_obstacle(room.player_positions, WIDTH, HEIGHT, position.pos), 'Player in the way'
+                !check_obstacle(room.player_positions, WIDTH, HEIGHT, chosen_column), 'Player in the way'
             );
 
             // Move has to be North
             let (new_position, is_exit) = move_player(
-                Direction::North, room.map, room.player_positions, position.pos, room.room_id, world
+                Direction::North, room.map, room.player_positions, chosen_column, room.room_id, world
             );
 
             if is_exit {

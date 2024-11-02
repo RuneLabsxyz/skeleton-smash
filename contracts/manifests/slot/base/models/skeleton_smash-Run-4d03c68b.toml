@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
-original_class_hash = "0x79d5e59164f03c20c97aad8819fafd372bff95516ae1168282e7369600208e4"
+class_hash = "0x695817357de69aa5831f65f62c8e3876f7325ec9747fe0bf44865e50ab72424"
+original_class_hash = "0x695817357de69aa5831f65f62c8e3876f7325ec9747fe0bf44865e50ab72424"
 abi = "manifests/slot/base/abis/models/skeleton_smash-Run-4d03c68b.json"
 tag = "skeleton_smash-Run"
 qualified_path = "skeleton_smash::models::player::run"
@@ -17,6 +17,11 @@ type = "ContractAddress"
 key = false
 
 [[members]]
+name = "room_id"
+type = "u32"
+key = false
+
+[[members]]
 name = "level"
 type = "u32"
 key = false
@@ -24,4 +29,9 @@ key = false
 [[members]]
 name = "move_count"
 type = "u32"
+key = false
+
+[[members]]
+name = "is_dead"
+type = "bool"
 key = false

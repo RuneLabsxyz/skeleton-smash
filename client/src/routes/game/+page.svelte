@@ -1,12 +1,21 @@
-<script>
-    import { currentPlayerRun, startRun } from "$lib/api/run";
+<script lang="ts">
+    import { startRun } from "$lib/api/run";
     import { currentPlayerRoom } from "$lib/api/room";
 
 
-    currentPlayerRoom.subscribe((e) => console.log("room: ", e));
+    let roomId: Number | null = $state(null);
 
-    async function startGame() {
-        await startRun();
+    currentPlayerRoom.subscribe((e) => {
+        roomId = e?.room_id ?? null;
+    });
+
+    $effect(() => {
+        if (roomId == null) return;
+        window.location.href = `/game/${roomId}`;
+    })
+
+    function startGame() {
+        startRun();
     }
 
 </script>

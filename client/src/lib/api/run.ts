@@ -63,7 +63,7 @@ export async function doMove(direction: Direction) {
     const [account, { client }] = await getDojoContext();
 
     try {
-        await client.actions.move_player({
+        await client.actions.move({
             account,
             direction: getModelValue(direction),
             seed: SEED()

@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x6bf422593059150b234bb6ec3ae46cdbd906fbc2bdcb5464a3a42716a44679"
-original_class_hash = "0x6bf422593059150b234bb6ec3ae46cdbd906fbc2bdcb5464a3a42716a44679"
+class_hash = "0x36873160f677497c6e7571712ec2ab6ea4c602fff8936d5ec7df902f6a1a910"
+original_class_hash = "0x36873160f677497c6e7571712ec2ab6ea4c602fff8936d5ec7df902f6a1a910"
 abi = "manifests/slot/base/abis/models/skeleton_smash-Room-164aae80.json"
 tag = "skeleton_smash-Room"
 qualified_path = "skeleton_smash::models::map::room"
@@ -27,6 +27,6 @@ type = "u32"
 key = false
 
 [[members]]
-name = "player_ids"
-type = "Array<ContractAddress>"
+name = "run_ids"
+type = "Array<u32>"
 key = false

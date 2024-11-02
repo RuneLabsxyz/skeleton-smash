@@ -16,8 +16,8 @@ telegram = "https://t.me/dojoengine"
 default = "skeleton_smash"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/skeleton-smash/katana"
+rpc_url = "https://api.cartridge.gg/x/skelton-smash/katana"
 # Default account for katana with seed = 0
-account_address = "0x64c55676fa979837a1d924daba35210d2e7a2ea4df5fdd83cca6cc35bc8c4f7"
-private_key = "0x667d430407d9612fda01933c83b0606aba862be1b9d1f50a3409a6a728f19f9"
-world_address = "0x105c6c57af576667003fdeb6cc98bbc846acfc818517f2124ddd001513ab51c"
+account_address = "0x4a92c703ced69b13e696e68086516cdadbcf7d9b0c22899bf0e280280f0210a"
+private_key = "0xb053744d9d6b1d8f5dbfe7502052c2716849fe5ef2609a62d52d25940a4455"
+world_address = "0x2a9b2d8dc43c75312bf14df3f83fcd68b2d4fd6945d91acccb6e9a669e56fad"

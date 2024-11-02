@@ -28,7 +28,7 @@
     "items": [
       {
         "type": "function",
-        "name": "name",
+        "name": "contract_name",
         "inputs": [],
         "outputs": [
           {
@@ -198,7 +198,7 @@
       },
       {
         "type": "function",
-        "name": "move_player",
+        "name": "move",
         "inputs": [
           {
             "name": "direction",
