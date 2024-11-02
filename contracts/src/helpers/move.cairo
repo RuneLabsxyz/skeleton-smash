@@ -275,4 +275,23 @@ mod tests {
         assert_eq!(new_position, 13);
         assert_eq!(is_exit, false);
     }
+
+    #[test]
+    fn test_move_player_test_4() {
+        let map = 64; // aka 6th bit
+        let (new_position, is_exit) = move_player_test(Direction::East, map, 0, 0, 0);
+        println!("new_position: {}", new_position);
+        assert_eq!(new_position, 5); // position 5
+        assert_eq!(is_exit, false);
+
+        let map_2 = 262080; // aka 6 and onwards bit as walls
+        let (new_position_2, is_exit_2) = move_player_test(Direction::East, map_2, 0, 0, 0);
+        assert_eq!(new_position_2, 5); // position 13
+        assert_eq!(is_exit_2, false);
+
+        let map_3 = 253952; // aka 14th bit as walls
+        let (new_position_3, is_exit_3) = move_player_test(Direction::South, map_3, 0, 251, 0);
+        assert_eq!(new_position_3, 27); // 2 row 14 the cell
+        assert_eq!(is_exit_3, false);
+    }
 }
