@@ -41,9 +41,9 @@ async function movePlayer(direction: Direction) {
         return;
     }
 
-    if (get(moveRequested)) {
-        return;
-    }
+    // if (get(moveRequested)) {
+    //     return;
+    // }
     moveRequested.set(true);
     console.log("Moving in direction: ", direction);
     await doMove(direction);

@@ -43,7 +43,7 @@
             {#each new Array(14) as _, row}
                 {#if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
                     <Player current={true} />
-                {:else if isSet(map, HEIGHT - 1 - col, WIDTH - row)}
+                {:else if isSet(map, HEIGHT - 1 - col, row + 1)}
                     <Wall />
                 {:else if isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)}
                     <Player current={false} />
