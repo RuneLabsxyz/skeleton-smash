@@ -3,11 +3,11 @@ import manifest from '../../contracts/manifests/dev/deployment/manifest.json'
 import { createDojoConfig } from '@dojoengine/core'
 
 export const dojoConfig = createDojoConfig({
-  toriiUrl: 'http://127.0.0.1:8080',
-  rpcUrl: 'http://127.0.0.1:5050',
+  toriiUrl: 'https://api.cartridge.gg/x/skelton-smash/torii',
+  rpcUrl: 'https://api.cartridge.gg/x/skelton-smash/katana',
   manifest,
-  masterAddress: '0x541da8f7f3ab8247329d22b3987d1ffb181bc8dc7f9611a6eccec3b0749a585',
-  masterPrivateKey: '0x736adbbcdac7cc600f89051db1abbc16b9996b46f6b58a9752a11c1028a8ec8',
+  masterAddress: '0x4a92c703ced69b13e696e68086516cdadbcf7d9b0c22899bf0e280280f0210a',
+  masterPrivateKey: '0xb053744d9d6b1d8f5dbfe7502052c2716849fe5ef2609a62d52d25940a4455',
 })
 
 export type Config = typeof dojoConfig
