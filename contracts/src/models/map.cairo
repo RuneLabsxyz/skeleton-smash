@@ -46,11 +46,29 @@ struct Room {
 #[generate_trait]
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
-        let map = MapTrait::new_maze(WIDTH, HEIGHT, 1, seed);
-        let distribution = map.compute_distribution(50, seed);
+        let mut map = MapTrait::new_maze(WIDTH, HEIGHT, 1, seed);
+
+        map.open_with_corridor(1, 1);
+        map.open_with_corridor(2, 1);
+        map.open_with_corridor(3, 1);
+        map.open_with_corridor(4, 1);
+        map.open_with_corridor(5, 1);
+        map.open_with_corridor(6, 1);
+        map.open_with_corridor(7, 1);
+        map.open_with_corridor(8, 1);
+        map.open_with_corridor(9, 1);
+        map.open_with_corridor(10, 1);
+        map.open_with_corridor(11, 1);
+        map.open_with_corridor(12, 1);
+
+        map.open_with_corridor(250, 1);
+        map.open_with_corridor(239, 1);
+
+
+        // let distribution = map.compute_distribution(100, seed);
 
         
-        Room { room_id, map: distribution, player_positions: 0, level, run_ids: ArrayTrait::new() }
+        Room { room_id, map: map.grid, player_positions: 0, level, run_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
         self.run_ids.len() == MAX_PLAYERS

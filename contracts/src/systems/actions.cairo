@@ -119,7 +119,7 @@ mod actions {
             let mut position = get!(world, player.run_id, (Position));
 
 
-            assert(!check_obstacle(room.map, chosen_column), 'Wall in the way');
+            assert(check_obstacle(room.map, chosen_column), 'Wall in the way');
             assert(
                 !check_obstacle(room.player_positions, chosen_column), 'Player in the way'
             );

@@ -15,7 +15,7 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
             break; 
         }
         // Check if next position is blocked in map
-        if check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
+        if !check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
         // Check if next position is blocked by player
