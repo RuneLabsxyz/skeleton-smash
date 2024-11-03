@@ -28,7 +28,7 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
 
         current_position = apply_move(direction, current_position, WIDTH);
 
-        if check_exit(WIDTH, HEIGHT, current_position, direction) {
+        if check_exit(current_position) {
             is_exit = true;
             break;
         }
