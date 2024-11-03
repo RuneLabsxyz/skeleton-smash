@@ -9,6 +9,7 @@
     import Background from "$lib/components/ui/Background.svelte";
 
     let room_map: Felt | null = $state(null);
+    let death_walls: Felt | null = $state(null);
     let run: Run | null = $state(null);
     let room: Room | null = $state(null);
     let isDead = $state(false);
@@ -22,6 +23,7 @@
 
     currentPlayerRoom.subscribe((e) => {
         room_map = e?.map ? { val: BigInt(String(e.map)) } : null;
+        death_walls = e?.death_walls ? { val: BigInt(String(e.death_walls)) } : null;
         room = e;
         console.log("room", room);
         if (e) {
@@ -44,7 +46,7 @@
 <div class="w-screen flex h-screen justify-center items-center flex-col">
     <h1 class="font-bold text-3xl mb-5">Skeleton Bash</h1>
     {#if room_map}
-        <Grid map={room_map} {run}></Grid>
+        <Grid map={room_map} {run} {death_walls}></Grid>
     {/if}
     <Ui {run} {isDead} />
     <Background level={currentLevel} />

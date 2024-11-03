@@ -2,6 +2,7 @@ use skeleton_smash::helpers::bitmap::{clear_player_bitmap};
 use dojo::world::IWorldDispatcher;
 use skeleton_smash::models::player::{Player, Run, Position};
 use skeleton_smash::models::map::{Room};
+use starknet::{ContractAddress, get_caller_address};
 
 fn kill_player(kill_player_position: u8, room_id: u32, world: IWorldDispatcher) {
 
@@ -37,4 +38,20 @@ fn kill_player(kill_player_position: u8, room_id: u32, world: IWorldDispatcher) 
         }
         i += 1;
     };
+}
+
+fn kill_trap(world: IWorldDispatcher) {
+
+    let contract_address = get_caller_address();
+
+    let mut player = get!(world, contract_address, (Player));
+    let mut run = get!(world, player.run_id, (Run));
+
+    run.is_dead = true;
+
+    player.run_history.append(player.run_id);
+    player.run_id = 0;
+    player.in_run = false;
+
+    set!(world, (run, player));
 }

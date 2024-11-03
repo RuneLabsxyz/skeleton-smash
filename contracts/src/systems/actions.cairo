@@ -70,25 +70,26 @@ mod actions {
             let mut run = get!(world, player.run_id, (Run));
             let mut room = get!(world, run.room_id, (Room));
             let mut position = get!(world, player.run_id, (Position));
+            let mut room_list = get!(world, 0, (RoomList));
 
             assert(run.is_dead == false, 'Player is dead');
 
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
             let (new_position, is_exit) = move_player(
-                direction, room.map, room.player_positions, position.pos, room.room_id, world
+                direction, room.map, room.player_positions, room.death_walls, position.pos, room.room_id, world
             );
 
             if is_exit {
+                set!(world, (room));
                 // Get the room list and current room
                 let new_level = run.level + 1;
-                let mut room_list = get!(world, 0, (RoomList));
                 let mut room_id = RoomListTrait::get_max_room_id_for_level(ref room_list, new_level);
                 if room_id == 0 {
                     // Create new room with the new id
                     room_id = world.uuid();
                     room = RoomTrait::new(room_id, seed, new_level);
-                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                    room_list.room_max_id_for_level.append(room_id);
                 } else {
                     room = get!(world, room_id, (Room));
                 }
@@ -99,14 +100,14 @@ mod actions {
                     // Create new room with the new id
                     room_id = world.uuid();
                     // set new max room id for level x
-                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, new_level, room_id);
                     room = RoomTrait::new(room_id, seed, 0);
                 }
                 room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;
                 run.move_count = 0;
                 run.room_id = room_id;
-                player = PlayerTrait::set_run_id(ref player, run.run_id);
+
             } else {
                 // Update position and player bitmap
                 position.pos = new_position;
@@ -115,7 +116,7 @@ mod actions {
                 run.move_count += 1;
             }
 
-            set!(world, (position, run, room));
+            set!(world, (position, run, room, room_list));
         }
 
         /// First move of the run
@@ -127,6 +128,7 @@ mod actions {
             let mut run = get!(world, player.run_id, (Run));
             let mut room = get!(world, run.room_id, (Room));
             let mut position = get!(world, player.run_id, (Position));
+            let mut room_list = get!(world, 0, (RoomList));
 
 
             assert(check_obstacle(room.map, chosen_column), 'Wall in the way');
@@ -136,18 +138,18 @@ mod actions {
 
             // Move has to be North
             let (new_position, is_exit) = move_player(
-                Direction::North, room.map, room.player_positions, chosen_column, room.room_id, world
+                Direction::North, room.map, room.player_positions, room.death_walls, chosen_column, room.room_id, world
             );
 
             if is_exit {
+                set!(world, (room));
                 // Get the room list and current room
                 let new_level = run.level + 1;
-                let mut room_list = get!(world, 0, (RoomList));
                 let mut room_id = RoomListTrait::get_max_room_id_for_level(ref room_list, new_level);
                 if room_id == 0 {
                     room_id = world.uuid();
                     room = RoomTrait::new(room_id, seed, new_level);
-                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                    room_list.room_max_id_for_level.append(room_id);
                 } else {
                     room = get!(world, room_id, (Room));
                 }
@@ -158,14 +160,14 @@ mod actions {
                     // Create new room with the new id
                     room_id = world.uuid();
                     // set new max room id for level x
-                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, new_level, room_id);
                     room = RoomTrait::new(room_id, seed, 0);
                 }
                 room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;
                 run.move_count = 0;
                 run.room_id = room_id;
-                player = PlayerTrait::set_run_id(ref player, run.run_id);
+
             } else {
                 // Update position and player bitmap
                 position.pos = new_position;
@@ -173,8 +175,7 @@ mod actions {
                 // Increment move count
                 run.move_count += 1;
             }
-
-            set!(world, (position, run, room, player));
+            set!(world, (position, run, room, room_list));
         }
         fn seppuku(ref world: IWorldDispatcher) {
             let contract_address = get_caller_address();

@@ -7,7 +7,7 @@ use skeleton_smash::consts::{WIDTH, HEIGHT, MAX_PLAYERS};
 struct RoomList {
     #[key]
     id: u32,
-    room_max_id_for_level: Array<u32>, // Max room id for each level
+    room_max_id_for_level: Array<u32>, // Max room id for each level [0]
 }
 
 #[generate_trait]
@@ -28,7 +28,7 @@ impl RoomListImpl of RoomListTrait {
             if i == self.room_max_id_for_level.len() {
                 break;
             }
-            if *self.room_max_id_for_level.at(i) != level {
+            if i != level {
                 room_max_id_for_level.append(*self.room_max_id_for_level.at(i));
             } else {
                 room_max_id_for_level.append(room_id);
@@ -45,6 +45,7 @@ struct Room {
     #[key]
     room_id: u32,
     map: felt252,
+    death_walls: felt252,
     player_positions: felt252,
     level: u32,
     run_ids: Array<u32>, // List of player ids in the room. At 5 players the room is killed
@@ -53,7 +54,7 @@ struct Room {
 #[generate_trait]
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
-        let steps: u16 = 300;
+        let steps: u16 = 700;
         let mut map = MapTrait::new_random_walk(WIDTH, HEIGHT, steps, seed);
 
         map.open_with_corridor(1, 1);
@@ -75,10 +76,17 @@ impl RoomImpl of RoomTrait {
         map.open_with_corridor(241, 1);
         map.open_with_corridor(240, 1);
 
-        map.open_with_corridor(237, 1);
-        map.open_with_corridor(224, 1);
+        let level_mod = level % 50;
+
+        let distribution = map.compute_distribution(level_mod.try_into().unwrap(), seed);
+
+
         // let distribution = map.compute_distribution(100, seed);
-        Room { room_id, map: map.grid, player_positions: 0, level, run_ids: ArrayTrait::new() }
+        Room { room_id, map: map.grid, death_walls: distribution, player_positions: 0, level, run_ids: ArrayTrait::new() }
+    }
+
+    fn new_empty() -> Room {
+        Room { room_id: 0, map: 0, death_walls: 0, player_positions: 0, level: 0, run_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
         self.run_ids.len() == MAX_PLAYERS
@@ -97,7 +105,7 @@ impl RoomImpl of RoomTrait {
             i += 1;
         };
         run_ids.append(run_id);
-        Room { room_id: self.room_id, map: self.map, player_positions: self.player_positions, level: self.level, run_ids }
+        Room { room_id: self.room_id, map: self.map, death_walls: self.death_walls, player_positions: self.player_positions, level: self.level, run_ids }
     }
 }
 

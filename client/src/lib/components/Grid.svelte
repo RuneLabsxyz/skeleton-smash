@@ -15,7 +15,7 @@
         currentPlayerPosition,
         otherPlayerPositions,
     } from "$lib/api/position";
-
+    import Trap from "./cell/Trap.svelte";
     let playerStart = $derived($playerStartPosition);
 
     currentPlayerPosition.subscribe((e: any) => {
@@ -24,9 +24,10 @@
         }
     });
 
-    let { map, run, room } = $props<{
+    let { map, run, death_walls  } = $props<{
         map: Felt | null;
         run: Run | null;
+        death_walls: Felt | null;
     }>();
 
     $effect(() => {
@@ -58,6 +59,8 @@
             {#each new Array(14) as _, row}
                 {#if isSet(map, HEIGHT - 1 - col, row + 1)}
                     <Wall />
+                {:else if !isSet(death_walls, HEIGHT - 1 - col, row + 1) && death_walls !== null}
+                    <Trap />
                 {:else if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
                     <Player current={true} />
                 {:else if isOtherPlayerAtPosition(col, row)}
