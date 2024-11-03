@@ -4,8 +4,10 @@
     import { type Run } from "$src/dojo/models.gen";
     import Background from "./ui/Background.svelte";
     import Level from "./ui/Level.svelte";
-    let { run } = $props<{
+    import DeadBanner from "./ui/deadbanner.svelte";
+    let { run, isDead } = $props<{
         run: Run | null;
+        isDead: boolean;
     }>();
 
 </script>
@@ -14,5 +16,10 @@
     {#if run?.move_count == 0}
         <StartBanner />
     {/if}
-    <Level level={run.level} />
+    {#if run}
+        <Level level={run.level} />
+    {/if}
+    {#if isDead}
+        <DeadBanner />
+    {/if}
 </div>
