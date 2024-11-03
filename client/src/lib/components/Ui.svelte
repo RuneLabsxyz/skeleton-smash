@@ -3,14 +3,16 @@
     import { currentPlayerRun } from "$lib/api/run";
     import { type Run } from "$src/dojo/models.gen";
     import Background from "./ui/Background.svelte";
-
+    import Level from "./ui/Level.svelte";
     let { run } = $props<{
         run: Run | null;
     }>();
+
 </script>
 
 <div class="absolute top-0 left-0 w-full h-full flex items-center">
     {#if run?.move_count == 0}
         <StartBanner />
     {/if}
+    <Level level={run.level} />
 </div>
