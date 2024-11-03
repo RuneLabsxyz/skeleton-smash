@@ -24,19 +24,19 @@
         room_map = e?.map ? { val: BigInt(String(e.map)) } : null;
         room = e;
         console.log("room", room);
+        if (e) {
+            const { pathname } = window.location;
+            const currentRunId = pathname.split('/').pop();
+            
+            if (currentRunId !== String(e.room_id)) {
+                window.history.replaceState({}, '', `/game/${e.room_id}`);
+            }
+        }
     });
 
     currentPlayerRun.subscribe((e) => {
         run = e;
         currentLevel = Number(e?.level ?? 0);
-        if (e) {
-            const { pathname } = window.location;
-            const currentRunId = pathname.split('/').pop();
-            
-            if (currentRunId !== String(e.run_id)) {
-                window.history.replaceState({}, '', `/game/${e.run_id}`);
-            }
-        }
     });
 
 </script>
