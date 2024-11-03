@@ -24,8 +24,8 @@ manifest_name = "dojo-base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x64a81532dec0aae2c41da0d4556b3727ab13231b77a4defdc3f480ac1dae8eb"
-class_hash = "0x1a117a5092a962977d895ecdbbf875d362a7533235eaf4212c616e4c5ac3b2c"
-original_class_hash = "0x1a117a5092a962977d895ecdbbf875d362a7533235eaf4212c616e4c5ac3b2c"
+class_hash = "0x1640938b6e17fd1eeeaa484d0399c9a4180cee5df50b5888880f668e328ab30"
+original_class_hash = "0x1640938b6e17fd1eeeaa484d0399c9a4180cee5df50b5888880f668e328ab30"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/skeleton_smash-actions-7ca74759.json"
 reads = []
