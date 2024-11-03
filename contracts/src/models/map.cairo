@@ -74,6 +74,9 @@ impl RoomImpl of RoomTrait {
 
         map.open_with_corridor(241, 1);
         map.open_with_corridor(240, 1);
+
+        map.open_with_corridor(237, 1);
+        map.open_with_corridor(224, 1);
         // let distribution = map.compute_distribution(100, seed);
         Room { room_id, map: map.grid, player_positions: 0, level, run_ids: ArrayTrait::new() }
     }
