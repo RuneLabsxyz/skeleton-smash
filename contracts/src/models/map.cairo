@@ -46,7 +46,8 @@ struct Room {
 #[generate_trait]
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
-        let mut map = MapTrait::new_maze(WIDTH, HEIGHT, 1, seed);
+        let steps: u16 = 300;
+        let mut map = MapTrait::new_random_walk(WIDTH, HEIGHT, steps, 813859603612189432131876132874719238712037164087829473518273498271623874091);
 
         map.open_with_corridor(1, 1);
         map.open_with_corridor(2, 1);
@@ -61,13 +62,12 @@ impl RoomImpl of RoomTrait {
         map.open_with_corridor(11, 1);
         map.open_with_corridor(12, 1);
 
-        map.open_with_corridor(250, 1);
-        map.open_with_corridor(239, 1);
+        map.open_with_corridor(249, 1);
+        map.open_with_corridor(248, 1);
 
-
+        map.open_with_corridor(241, 1);
+        map.open_with_corridor(240, 1);
         // let distribution = map.compute_distribution(100, seed);
-
-        
         Room { room_id, map: map.grid, player_positions: 0, level, run_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
