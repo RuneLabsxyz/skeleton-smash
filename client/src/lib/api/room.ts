@@ -1,4 +1,3 @@
-import { playerPosition } from "$lib/components/players";
 import { componentValueStore } from "$src/dojo/componentValueStore";
 import type { Position, Room } from "$src/dojo/models.gen";
 import { getDojo } from "$src/stores/dojoStores";
@@ -7,13 +6,13 @@ import type { Readable } from "svelte/motion";
 import { derived } from "svelte/store";
 import get from "./utils";
 
-export type RoomState = Room & {    
+export type RoomState = Room & {
 };
 
 export async function Room(roomId: number): Promise<Readable<RoomState | null>> {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
-    
+
     const valueHash = torii.poseidonHash([String(roomId)]);
     // return a component value store of the object:
     return derived([componentValueStore(clientComponents.Room, valueHash)], ([val], set) => {

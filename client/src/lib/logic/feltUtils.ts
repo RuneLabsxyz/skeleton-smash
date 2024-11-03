@@ -17,3 +17,7 @@ export function isSet(felt: Felt, col: number, row: number): boolean {
     let mask = (BigInt(1) << BigInt(offset - 1));
     return (mask & felt.val) == BigInt(0);
 }
+
+export function fromOffset(offset: number): [number, number] {
+    return [Math.floor(offset / WIDTH), offset % WIDTH]
+}
