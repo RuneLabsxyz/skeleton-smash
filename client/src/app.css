@@ -7,3 +7,11 @@ body {
     height: 100vh;
     width: 100vw;
 }
+
+@font-face {
+  font-family: 'halloween';
+  src: url('/fonts/chadwick-webfont.woff2') format('woff2'),
+       url('/fonts/chadwick-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
