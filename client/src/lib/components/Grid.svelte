@@ -19,14 +19,6 @@
     import Bones from "./cell/Bones.svelte";
     import Trap from "./cell/Trap.svelte";
   
-    let playerStart = $derived($playerStartPosition);
-
-    currentPlayerPosition.subscribe((e: any) => {
-        if (e) {
-            playerPosition.set(Number(e.pos));
-        }
-    });
-
     let { map, run, room, shake, death_walls } = $props<{
         map: Felt | null;
         run: Run | null;
@@ -66,10 +58,6 @@
                     <Wall />
                 {:else if !isSet(death_walls, HEIGHT - 1 - col, row + 1) && death_walls !== null}
                     <Trap />
-                {:else if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
-                    <Player current={true} />
-                {:else if isOtherPlayerAtPosition(col, row)}
-                    <Player current={false} />
                 {:else}
                     <div class="w-[var(--grid-width)] aspect-square"></div>
                 {/if}
