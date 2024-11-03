@@ -24,7 +24,7 @@
 <div class="w-screen flex h-screen justify-center items-center flex-col">
     <h1 class="font-bold text-3xl mb-5">Skeleton Bash</h1>
     {#if room_map}
-        <Grid map={room_map} run={run} room={room}></Grid>
+        <Grid map={room_map} run={run}></Grid>
     {/if}
     <Ui run={run} />
 </div>
