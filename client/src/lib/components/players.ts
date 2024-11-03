@@ -40,7 +40,7 @@ async function movePlayer(direction: Direction) {
         return;
     }
 
-    if (get(currentPlayerPosition) === null) {
+    if (get(currentPlayerRun)?.move_count == 0) {
         await spawnPlayer(direction);
         return;
     }

@@ -10,8 +10,16 @@
         position: Position | null;
     }>();
 
+    let previousValue = $state(0);
+
+    $effect(() => {
+        if (position?.pos != null) {
+            previousValue = position.pos;
+        }
+    });
+
     let posStore: [number, number] = $derived(
-        fromOffset((position?.pos ?? 0) as number),
+        fromOffset((position?.pos ?? previousValue) as number),
     );
 
     let pos = $state(tweened<[number, number] | null>(null));

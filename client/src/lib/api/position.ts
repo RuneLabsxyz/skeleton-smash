@@ -2,7 +2,7 @@ import { componentValueStore } from "$src/dojo/componentValueStore";
 import type { Position as PositionTy } from "$src/dojo/models.gen";
 import { getDojo } from "$src/stores/dojoStores";
 import { derived, type Readable, get as storeGet } from "svelte/store";
-import { currentPlayerRun, isMovePending } from "./run";
+import { currentPlayerRun, isMovePending, Run } from "./run";
 import { currentPlayerRoom } from "./room";
 import get from "./utils";
 
@@ -29,21 +29,33 @@ export const currentPlayerPosition: Readable<PositionTy | null> = derived([curre
     })
 })
 
-export const otherPlayerPositions = derived([currentPlayerRoom], ([room], set) => {
+export type PositionStatus = PositionTy & {
+    dead: boolean
+}
+
+export const otherPlayerPositions: Readable<Record<number, PositionStatus> | null> = derived([currentPlayerRoom], ([room], set) => {
     if (room == null) {
         set(null);
         return;
     }
 
-    const positions: Record<number, PositionTy> = {};
+    const positions: Record<number, PositionStatus> = {};
     const unsubscribes: (() => void)[] = [];
 
-    for (const run_id of room.run_ids) {
+    for (const run_id of room?.run_ids ?? []) {
         (async () => {
             const positionStore = await Position(Number(run_id));
-            const unsubscribe = positionStore.subscribe(pos => {
+            const runStore = await Run(Number(run_id));
+            const unsubscribe = derived([positionStore, runStore], ([pos, run], derivedSet) => {
                 if (pos !== undefined && pos !== null) {
-                    positions[Number(run_id)] = pos;
+                    derivedSet({
+                        ...pos,
+                        dead: run.is_dead
+                    })
+                }
+            }).subscribe(pos => {
+                if (pos !== undefined && pos !== null) {
+                    positions[Number(run_id)] = pos as PositionStatus;
                     set({ ...positions });
                 }
             });
