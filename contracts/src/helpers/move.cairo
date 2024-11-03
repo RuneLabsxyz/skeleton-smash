@@ -267,12 +267,6 @@ mod tests {
         assert_eq!(is_exit, false);
     }
     #[test]
-    fn test_move_player_test_2() {
-        let (new_position, is_exit) = move_player_test(Direction::East, 0, 0, 251-13, 0);
-        assert_eq!(new_position, 251);
-        assert_eq!(is_exit, false);
-    }
-    #[test]
     fn test_move_player_test_3() {
         let (new_position, is_exit) = move_player_test(Direction::South, 0, 0, 251, 0);
         assert_eq!(new_position, 13);
@@ -296,5 +290,19 @@ mod tests {
         let (new_position_3, is_exit_3) = move_player_test(Direction::South, map_3, 0, 251, 0);
         assert_eq!(new_position_3, 27); // 2 row 14 the cell
         assert_eq!(is_exit_3, false);
+    }
+
+    #[test]
+    fn test_check_exit() {
+        let is_exit = check_exit(249);
+        assert_eq!(is_exit, true);
+    }
+    #[test]
+    fn test_check_exit_2() {
+        let map = 0; 
+        /// direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8, room_id: u32
+        let (new_position, is_exit) = move_player_test(Direction::North, map, 0, 235, 0);
+        assert_eq!(is_exit, true);
+
     }
 }

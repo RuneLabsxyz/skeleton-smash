@@ -12,6 +12,14 @@ struct RoomList {
 
 #[generate_trait]
 impl RoomListImpl of RoomListTrait {
+    fn get_max_room_id_for_level(ref self: RoomList, level: u32) -> u32 {
+        if level >= self.room_max_id_for_level.len() {
+            self.room_max_id_for_level.append(0);
+            0
+        } else {
+            *self.room_max_id_for_level.at(level)
+        }
+    }
     /// Increments the maximum room ID for a specific level in the RoomList.
     /// Used when a new room is created for a particular level to keep track of room IDs.
     fn increment_max_room_id_for_level(ref self: RoomList, level: u32) -> RoomList {

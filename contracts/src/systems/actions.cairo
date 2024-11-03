@@ -80,7 +80,7 @@ mod actions {
                 // Get the room list and current room
                 let new_level = run.level + 1;
                 let mut room_list = get!(world, 0, (RoomList));
-                let mut room_id = *room_list.room_max_id_for_level[new_level];
+                let mut room_id = RoomListTrait::get_max_room_id_for_level(ref room_list, new_level);
                 let mut room = get!(world, room_id, (Room));
                 position.pos = 0;
 
