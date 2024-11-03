@@ -10,7 +10,7 @@
         position: Position | null;
     }>();
 
-    let previousValue = $state(0);
+    let previousValue = $state(null);
 
     $effect(() => {
         if (position?.pos != null) {
@@ -19,13 +19,15 @@
     });
 
     let posStore: [number, number] = $derived(
-        fromOffset((position?.pos ?? previousValue) as number),
+        fromOffset((position?.pos ?? previousValue ?? -1) as number),
     );
 
     let pos = $state(tweened<[number, number] | null>(null));
 
     $effect(() => {
-        pos.set(posStore);
+        if ((position?.pos ?? previousValue) != null) {
+            pos.set(posStore);
+        }
     });
 </script>
 

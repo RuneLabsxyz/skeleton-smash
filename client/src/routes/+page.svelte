@@ -4,12 +4,12 @@
 
 {#if !startGame}
   <div class="title-screen">
-    <h1 class="font-halloween text-6xl text-white pb-8 ">SKELETON SMASH</h1>
-    <button 
+    <h1 class="font-halloween text-6xl text-white pb-8">Skeleton Smash</h1>
+    <button
       class="start-button"
       on:click={() => {
         startGame = true;
-        window.location.href = '/game';
+        window.location.href = "/game";
       }}
     >
       Start Playing
@@ -52,10 +52,14 @@
 
   @keyframes glow {
     from {
-      text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+      text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff;
     }
     to {
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+      text-shadow:
+        0 0 10px #fff,
+        0 0 20px #fff;
     }
   }
 </style>
