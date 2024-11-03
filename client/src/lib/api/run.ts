@@ -8,6 +8,9 @@ import get from "./utils";
 
 const SEED = () => BigInt(Math.floor(Math.random() * 1_000_000));
 
+
+export const isMovePending = writable(false);
+
 export async function startRun() {
     // Get the context 
     const [account, { client }] = await getDojoContext();
@@ -26,12 +29,16 @@ export async function doFirstMove(column: number) {
     const [account, { client }] = await getDojoContext();
 
     try {
+        isMovePending.set(true);
+
         await client.actions.first_move({
             account,
             chosen_column: column,
             seed: SEED()
         });
     } catch (err) {
+        isMovePending.set(false);
+
         console.log("An error occurred while doing the first move: ", err)
     }
 }
@@ -49,13 +56,13 @@ function getModelValue(direction: Direction): ModelDirection {
         case Direction.None:
             return { type: "None" }
         case Direction.North:
-            return {type: "North"}
+            return { type: "North" }
         case Direction.East:
-            return {type: "East"}
+            return { type: "East" }
         case Direction.South:
-            return {type: "South"}
+            return { type: "South" }
         case Direction.West:
-            return {type: "West"}
+            return { type: "West" }
     }
 }
 
@@ -64,13 +71,19 @@ export async function doMove(direction: Direction) {
     const [account, { client }] = await getDojoContext();
 
     try {
+        // We are submitting a move
+        isMovePending.set(true);
+
         await client.actions.move({
             account,
             direction: getModelValue(direction),
             seed: SEED()
         });
+
     } catch (err) {
-        console.log("An error occurred while doing the first move: ", err)
+        console.log("An error occurred while doing the first move: ", err);
+
+        isMovePending.set(false);
     }
 }
 

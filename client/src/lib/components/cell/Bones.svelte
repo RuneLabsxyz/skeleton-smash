@@ -1,1 +1,10 @@
-<div class="w-8 aspect-square text-center bg-gray-100">b</div>
+<div
+    class="w-[var(--grid-width)] aspect-square flex justify-center items-center align-middle"
+>
+    <img
+        src="/assets/tomb.png"
+        alt="current player"
+        class="w-8"
+        style="image-rendering: pixelated;"
+    />
+</div>

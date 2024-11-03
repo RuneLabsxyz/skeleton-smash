@@ -1,11 +1,45 @@
 <script lang="ts">
-    let { current } = $props<{
+    import { fromOffset } from "$lib/logic/feltUtils";
+    import type { Position } from "$src/dojo/models.gen";
+    import { tweened } from "svelte/motion";
+    import { SvelteURL } from "svelte/reactivity";
+    import { get, type Readable } from "svelte/store";
+
+    let { current, position } = $props<{
         current: boolean;
+        position: Position | null;
     }>();
+
+    let posStore: [number, number] = $derived(
+        fromOffset((position?.pos ?? 0) as number),
+    );
+
+    let pos = $state(tweened<[number, number] | null>(null));
+
+    $effect(() => {
+        pos.set(posStore);
+    });
 </script>
 
-{#if current}
-    <div class="w-8 aspect-square text-center bg-green-600">y</div>
-{:else}
-    <div class="w-8 aspect-square text-center bg-cyan-500">o</div>
+{#if $pos !== null}
+    <div
+        class="w-[var(--grid-width)] aspect-square flex justify-center items-center align-middle absolute z-30"
+        style={`bottom: calc((var(--grid-width) + 0.25rem) * ${$pos[0] + 1}); left: calc((var(--grid-width) + 0.25rem) * ${$pos[1]})`}
+    >
+        {#if current}
+            <img
+                src="/assets/player.png"
+                alt="current player"
+                class="w-8"
+                style="image-rendering: pixelated;"
+            />
+        {:else}
+            <img
+                src="/assets/other.png"
+                alt="current player"
+                class="w-8"
+                style="image-rendering: pixelated;"
+            />
+        {/if}
+    </div>
 {/if}
