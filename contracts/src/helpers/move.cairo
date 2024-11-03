@@ -122,15 +122,18 @@ fn check_obstacle(grid: felt252, position: u8) -> bool {
 /// # Returns
 /// * Whether the position is the exit
 #[inline]
-fn check_exit(width: u8, height: u8, position: u8, direction: Direction) -> bool {
+fn check_exit(position: u8) -> bool {
 
-    let is_north = match direction {
-        Direction::North => true,
-        _ => false,
-    };
-
-    let bit_position = pow2_const(position);
-    bit_position == 245_u256 && is_north
+    if position == 249 {
+        return true;
+    } else if position == 248 {
+        return true;
+    } else if position == 241 {
+        return true;
+    } else if position == 240 {
+        return true;
+    }
+    false
 }
 
 //for tests
