@@ -10,9 +10,13 @@
     import {
         currentPlayerPosition,
         otherPlayerPositions,
+        type PositionStatus,
     } from "$lib/api/position";
-    import { currentPlayerRun, isMovePending } from "$lib/api/run";
+    import { currentPlayerRun, isMovePending, Run as RunStore } from "$lib/api/run";
     import { currentPlayer } from "$lib/api/player";
+    import { get } from "svelte/store";
+    import getStore from "$lib/api/utils";
+    import Bones from "./cell/Bones.svelte";
 
     let { map, run, room, shake } = $props<{
         map: Felt | null;
@@ -25,16 +29,6 @@
 
         return unsubscribe;
     });
-
-    function isOtherPlayerAtPosition(col: number, row: number): boolean {
-        try {
-            return Object.values(
-                $otherPlayerPositions as Record<string, { pos: number }>,
-            ).some((p) => p.pos === (HEIGHT - 1 - col) * WIDTH + row);
-        } catch {
-            return false;
-        }
-    }
 </script>
 
 <div
@@ -45,9 +39,13 @@
         <Player current={true} position={$currentPlayerPosition} />
     {/if}
 
-    {#each Object.entries(($otherPlayerPositions as Record<string, Position> | null) ?? {}) as pos}
+    {#each Object.entries(($otherPlayerPositions as Record<string, PositionStatus> | null) ?? {}) as pos}
         {#if Number(pos[0]) !== $currentPlayerRun?.run_id}
-            <Player current={false} position={pos[1]} />
+            {#if pos[1].dead}
+                <Bones position={pos[1]} />
+            {:else}
+                <Player current={false} position={pos[1]} />
+            {/if}
         {/if}
     {/each}
 
@@ -64,10 +62,10 @@
     {/each}
     <div class="h-[var(--grid-width)] bg-gray-200 flex items-center justify-center relative">
         SAFE ZONE
-        {#if $currentPlayerPosition === null}
+        {#if ($currentPlayerRun?.move_count as number) == 0}
             <div
                 class="w-[var(--grid-width)] aspect-square bg-red-500"
-                style="position: absolute; left: calc({$playerStartPosition} * var(--grid-width));"
+                style="position: absolute; left: calc({$playerStartPosition} * (var(--grid-width) + 0.25rem));"
             ></div>
         {/if}
     </div>
