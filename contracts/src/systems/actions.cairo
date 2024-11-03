@@ -24,9 +24,11 @@ mod actions {
     impl ActionsImpl of IActions<ContractState> {
         fn initialize(ref world: IWorldDispatcher) {
             let mut initial_room_ids = ArrayTrait::new();
-            initial_room_ids.append(0);
+
+            let room_id = world.uuid();
+            let initial_room = RoomTrait::new(room_id, 12, 0);
+            initial_room_ids.append(room_id);
             let room_list = RoomList { id: 0, room_max_id_for_level: initial_room_ids };
-            let initial_room = RoomTrait::new(0, 12, 0);
             set!(world, (room_list, initial_room));
         }
 
@@ -45,10 +47,10 @@ mod actions {
 
             // If current room is full, create a new one
             if RoomTrait::is_full(ref room) {
-                // Increment the room id for level 0
-                room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0);
                 // Create new room with the new id
-                room_id = *room_list.room_max_id_for_level[0];
+                room_id = world.uuid();
+                // set new max room id for level x
+                room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
                 room = RoomTrait::new(room_id, seed, 0);
             }
 
@@ -80,17 +82,24 @@ mod actions {
                 // Get the room list and current room
                 let new_level = run.level + 1;
                 let mut room_list = get!(world, 0, (RoomList));
-                let mut room_id = *room_list.room_max_id_for_level[new_level];
-                let mut room = get!(world, room_id, (Room));
+                let mut room_id = RoomListTrait::get_max_room_id_for_level(ref room_list, new_level);
+                if room_id == 0 {
+                    // Create new room with the new id
+                    room_id = world.uuid();
+                    room = RoomTrait::new(room_id, seed, new_level);
+                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                } else {
+                    room = get!(world, room_id, (Room));
+                }
                 position.pos = 0;
 
                 // If current room is full, create a new one
                 if RoomTrait::is_full(ref room) {
-                    // Increment the room id for level 0
-                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0);
                     // Create new room with the new id
-                    room_id = *room_list.room_max_id_for_level[new_level];
-                    room = RoomTrait::new(room_id, seed, new_level);
+                    room_id = world.uuid();
+                    // set new max room id for level x
+                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                    room = RoomTrait::new(room_id, seed, 0);
                 }
                 room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;
@@ -119,7 +128,7 @@ mod actions {
             let mut position = get!(world, player.run_id, (Position));
 
 
-            assert(!check_obstacle(room.map, chosen_column), 'Wall in the way');
+            assert(check_obstacle(room.map, chosen_column), 'Wall in the way');
             assert(
                 !check_obstacle(room.player_positions, chosen_column), 'Player in the way'
             );
@@ -133,17 +142,23 @@ mod actions {
                 // Get the room list and current room
                 let new_level = run.level + 1;
                 let mut room_list = get!(world, 0, (RoomList));
-                let mut room_id = *room_list.room_max_id_for_level[new_level];
-                let mut room = get!(world, room_id, (Room));
+                let mut room_id = RoomListTrait::get_max_room_id_for_level(ref room_list, new_level);
+                if room_id == 0 {
+                    room_id = world.uuid();
+                    room = RoomTrait::new(room_id, seed, new_level);
+                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                } else {
+                    room = get!(world, room_id, (Room));
+                }
                 position.pos = 0;
 
                 // If current room is full, create a new one
                 if RoomTrait::is_full(ref room) {
-                    // Increment the room id for level 0
-                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0);
                     // Create new room with the new id
-                    room_id = *room_list.room_max_id_for_level[new_level];
-                    room = RoomTrait::new(room_id, seed, new_level);
+                    room_id = world.uuid();
+                    // set new max room id for level x
+                    room_list = RoomListTrait::increment_max_room_id_for_level(ref room_list, 0, room_id);
+                    room = RoomTrait::new(room_id, seed, 0);
                 }
                 room = RoomTrait::add_player(ref room, run.run_id);
                 run.level = new_level;

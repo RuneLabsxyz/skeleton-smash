@@ -12,9 +12,16 @@ struct RoomList {
 
 #[generate_trait]
 impl RoomListImpl of RoomListTrait {
+    fn get_max_room_id_for_level(ref self: RoomList, level: u32) -> u32 {
+        if level >= self.room_max_id_for_level.len() {
+            0
+        } else {
+            *self.room_max_id_for_level.at(level)
+        }
+    }
     /// Increments the maximum room ID for a specific level in the RoomList.
     /// Used when a new room is created for a particular level to keep track of room IDs.
-    fn increment_max_room_id_for_level(ref self: RoomList, level: u32) -> RoomList {
+    fn increment_max_room_id_for_level(ref self: RoomList, level: u32, room_id: u32) -> RoomList {
         let mut room_max_id_for_level = ArrayTrait::new();
         let mut i = 0;
         loop {
@@ -24,7 +31,7 @@ impl RoomListImpl of RoomListTrait {
             if *self.room_max_id_for_level.at(i) != level {
                 room_max_id_for_level.append(*self.room_max_id_for_level.at(i));
             } else {
-                room_max_id_for_level.append(*self.room_max_id_for_level.at(i) + 1);
+                room_max_id_for_level.append(room_id);
             }
             i += 1;
         };
@@ -46,11 +53,29 @@ struct Room {
 #[generate_trait]
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
-        let map = MapTrait::new_maze(WIDTH, HEIGHT, 1, seed);
-        let distribution = map.compute_distribution(50, seed);
+        let steps: u16 = 300;
+        let mut map = MapTrait::new_random_walk(WIDTH, HEIGHT, steps, seed);
 
-        
-        Room { room_id, map: distribution, player_positions: 0, level, run_ids: ArrayTrait::new() }
+        map.open_with_corridor(1, 1);
+        map.open_with_corridor(2, 1);
+        map.open_with_corridor(3, 1);
+        map.open_with_corridor(4, 1);
+        map.open_with_corridor(5, 1);
+        map.open_with_corridor(6, 1);
+        map.open_with_corridor(7, 1);
+        map.open_with_corridor(8, 1);
+        map.open_with_corridor(9, 1);
+        map.open_with_corridor(10, 1);
+        map.open_with_corridor(11, 1);
+        map.open_with_corridor(12, 1);
+
+        map.open_with_corridor(249, 1);
+        map.open_with_corridor(248, 1);
+
+        map.open_with_corridor(241, 1);
+        map.open_with_corridor(240, 1);
+        // let distribution = map.compute_distribution(100, seed);
+        Room { room_id, map: map.grid, player_positions: 0, level, run_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
         self.run_ids.len() == MAX_PLAYERS

@@ -15,7 +15,7 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
             break; 
         }
         // Check if next position is blocked in map
-        if check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
+        if !check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
         // Check if next position is blocked by player
@@ -28,7 +28,7 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
 
         current_position = apply_move(direction, current_position, WIDTH);
 
-        if check_exit(WIDTH, HEIGHT, current_position, direction) {
+        if check_exit(current_position) {
             is_exit = true;
             break;
         }
@@ -122,15 +122,18 @@ fn check_obstacle(grid: felt252, position: u8) -> bool {
 /// # Returns
 /// * Whether the position is the exit
 #[inline]
-fn check_exit(width: u8, height: u8, position: u8, direction: Direction) -> bool {
+fn check_exit(position: u8) -> bool {
 
-    let is_north = match direction {
-        Direction::North => true,
-        _ => false,
-    };
-
-    let bit_position = pow2_const(position);
-    bit_position == 245_u256 && is_north
+    if position == 249 {
+        return true;
+    } else if position == 248 {
+        return true;
+    } else if position == 241 {
+        return true;
+    } else if position == 240 {
+        return true;
+    }
+    false
 }
 
 //for tests
@@ -156,7 +159,7 @@ fn move_player_test(direction: Direction, map: felt252, player_positions: felt25
 
         current_position = apply_move(direction, current_position, WIDTH);
 
-        if check_exit(WIDTH, HEIGHT, current_position, direction) {
+        if check_exit(current_position) {
             is_exit = true;
             break;
         }
@@ -264,12 +267,6 @@ mod tests {
         assert_eq!(is_exit, false);
     }
     #[test]
-    fn test_move_player_test_2() {
-        let (new_position, is_exit) = move_player_test(Direction::East, 0, 0, 251-13, 0);
-        assert_eq!(new_position, 251);
-        assert_eq!(is_exit, false);
-    }
-    #[test]
     fn test_move_player_test_3() {
         let (new_position, is_exit) = move_player_test(Direction::South, 0, 0, 251, 0);
         assert_eq!(new_position, 13);
@@ -293,5 +290,19 @@ mod tests {
         let (new_position_3, is_exit_3) = move_player_test(Direction::South, map_3, 0, 251, 0);
         assert_eq!(new_position_3, 27); // 2 row 14 the cell
         assert_eq!(is_exit_3, false);
+    }
+
+    #[test]
+    fn test_check_exit() {
+        let is_exit = check_exit(249);
+        assert_eq!(is_exit, true);
+    }
+    #[test]
+    fn test_check_exit_2() {
+        let map = 0; 
+        /// direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8, room_id: u32
+        let (new_position, is_exit) = move_player_test(Direction::North, map, 0, 235, 0);
+        assert_eq!(is_exit, true);
+
     }
 }
