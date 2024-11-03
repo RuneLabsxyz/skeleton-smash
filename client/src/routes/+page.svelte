@@ -4,7 +4,7 @@
 
 {#if !startGame}
   <div class="title-screen">
-    <h1 class="title">SKELETON SMASH</h1>
+    <h1 class="font-halloween text-6xl text-white pb-8 ">SKELETON SMASH</h1>
     <button 
       class="start-button"
       on:click={() => {
