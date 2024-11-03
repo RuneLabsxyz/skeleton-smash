@@ -367,6 +367,20 @@
     "interface_name": "skeleton_smash::models::player::Iplayer"
   },
   {
+    "type": "enum",
+    "name": "core::bool",
+    "variants": [
+      {
+        "name": "False",
+        "type": "()"
+      },
+      {
+        "name": "True",
+        "type": "()"
+      }
+    ]
+  },
+  {
     "type": "struct",
     "name": "skeleton_smash::models::player::Player",
     "members": [
@@ -381,6 +395,10 @@
       {
         "name": "run_history",
         "type": "core::array::Array::<core::integer::u32>"
+      },
+      {
+        "name": "in_run",
+        "type": "core::bool"
       }
     ]
   },

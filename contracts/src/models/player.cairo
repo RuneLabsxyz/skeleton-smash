@@ -16,13 +16,14 @@ struct Player {
     contract_address: ContractAddress,
     run_id: u32, // if 0, the player is not in a run
     run_history: Array<u32>, // history of run ids
+    in_run: bool, // if true, the player is in a run
 }
 
 #[generate_trait]
 impl PlayerImpl of PlayerTrait {
     fn set_run_id(ref self: Player, run_id: u32) -> Player {
         //TODO correct run history
-        Player { contract_address: self.contract_address, run_id, run_history: ArrayTrait::new() }
+        Player { contract_address: self.contract_address, run_id, run_history: ArrayTrait::new(), in_run: true }
     }
 }
 
