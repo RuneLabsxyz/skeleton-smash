@@ -14,10 +14,19 @@
     currentPlayerRoom.subscribe((e) => {
         room_map = e?.map ? { val: BigInt(String(e.map)) } : null;
         room = e;
+        console.log("room", room);
     });
 
     currentPlayerRun.subscribe((e) => {
         run = e;
+        if (e) {
+            const { pathname } = window.location;
+            const currentRunId = pathname.split('/').pop();
+            
+            if (currentRunId !== String(e.run_id)) {
+                window.history.replaceState({}, '', `/game/${e.run_id}`);
+            }
+        }
     });
 
     let currentLevel = $state(0);

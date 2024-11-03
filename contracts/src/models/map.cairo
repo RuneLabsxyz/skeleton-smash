@@ -14,7 +14,6 @@ struct RoomList {
 impl RoomListImpl of RoomListTrait {
     fn get_max_room_id_for_level(ref self: RoomList, level: u32) -> u32 {
         if level >= self.room_max_id_for_level.len() {
-            self.room_max_id_for_level.append(0);
             0
         } else {
             *self.room_max_id_for_level.at(level)
@@ -22,7 +21,7 @@ impl RoomListImpl of RoomListTrait {
     }
     /// Increments the maximum room ID for a specific level in the RoomList.
     /// Used when a new room is created for a particular level to keep track of room IDs.
-    fn increment_max_room_id_for_level(ref self: RoomList, level: u32) -> RoomList {
+    fn increment_max_room_id_for_level(ref self: RoomList, level: u32, room_id: u32) -> RoomList {
         let mut room_max_id_for_level = ArrayTrait::new();
         let mut i = 0;
         loop {
@@ -32,7 +31,7 @@ impl RoomListImpl of RoomListTrait {
             if *self.room_max_id_for_level.at(i) != level {
                 room_max_id_for_level.append(*self.room_max_id_for_level.at(i));
             } else {
-                room_max_id_for_level.append(*self.room_max_id_for_level.at(i) + 1);
+                room_max_id_for_level.append(room_id);
             }
             i += 1;
         };
