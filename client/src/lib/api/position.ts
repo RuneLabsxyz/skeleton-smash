@@ -5,6 +5,7 @@ import { derived, type Readable, get as storeGet } from "svelte/store";
 import { currentPlayerRun, isMovePending, Run } from "./run";
 import { currentPlayerRoom } from "./room";
 import get from "./utils";
+import { run } from "svelte/legacy";
 
 export async function Position(runId: number): Promise<Readable<PositionTy | null>> {
     // We consider they are unchangeable
@@ -47,7 +48,7 @@ export const otherPlayerPositions: Readable<Record<number, PositionStatus> | nul
             const positionStore = await Position(Number(run_id));
             const runStore = await Run(Number(run_id));
             const unsubscribe = derived([positionStore, runStore], ([pos, run], derivedSet) => {
-                if (pos !== undefined && pos !== null) {
+                if (pos !== undefined && pos !== null && run.room_id == room.room_id) {
                     derivedSet({
                         ...pos,
                         dead: run.is_dead

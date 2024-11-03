@@ -60,13 +60,19 @@
             {/each}
         </div>
     {/each}
-    <div class="h-[var(--grid-width)] bg-gray-200 flex items-center justify-center relative">
-        SAFE ZONE
+    <div class="h-[var(--grid-width)] bg-gray-200 flex items-center justify-center relative safe-grid">
         {#if ($currentPlayerRun?.move_count as number) == 0}
             <div
-                class="w-[var(--grid-width)] aspect-square bg-red-500"
+                class="w-[var(--grid-width)] aspect-square  flex items-center justify-center"
                 style="position: absolute; left: calc({$playerStartPosition} * (var(--grid-width) + 0.25rem));"
-            ></div>
+            >
+                <img
+                    src="/assets/player.png"
+                    alt="current player"
+                    class="w-8 h-8"
+                    style="image-rendering: pixelated;"
+                />
+            </div>
         {/if}
     </div>
 </div>
@@ -77,6 +83,11 @@
     }
     .game-grid {
         background: url("/assets/bg.png");
+        background-size: var(--grid-width);
+    }
+
+    .safe-grid {
+        background: url("/assets/safe.png");
         background-size: var(--grid-width);
     }
 </style>
