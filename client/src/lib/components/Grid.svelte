@@ -6,27 +6,25 @@
     import { playerPosition, playerStartPosition, handleKeydown } from "./players";
     import { onMount } from "svelte";
     import { type Felt } from "$lib/logic/feltUtils";
-    import { type Run } from "$src/dojo/models.gen";
-    import { currentPlayerPosition } from "$lib/api/position";
+    import { type Run, type Room } from "$src/dojo/models.gen";
+    import { currentPlayerPosition, otherPlayerPositions } from "$lib/api/position";
 
-    let player = $derived($playerPosition);
     let playerStart = $derived($playerStartPosition);
 
-    currentPlayerPosition.subscribe((e) => {
+    currentPlayerPosition.subscribe((e: any) => {
         if (e) {
-            playerPosition.set(e.pos);
-            console.log("Player position: ", e.pos);
+            playerPosition.set(Number(e.pos));
         }
     });
 
-    let { map, run } = $props<{
+    let { map, run, room } = $props<{
         map: Felt | null;
         run: Run | null;
     }>();
 
     $effect(() => {
         if (run.move_count == 0) {
-            playerStartPosition.set(7);
+            playerStartPosition.set(7)
         } else {
             playerStartPosition.set(null);
         }
@@ -35,6 +33,16 @@
     onMount(() => {
         window.addEventListener("keydown", handleKeydown);
     });
+
+    function isOtherPlayerAtPosition(col: number, row: number): boolean {
+        try {
+            return Object.values($otherPlayerPositions as Record<string, {pos: number}>).some(
+                p => p.pos === (HEIGHT - 1 - col) * WIDTH + row
+            );
+        } catch {
+            return false;
+        }
+    }
 </script>
 
 <div class="flex flex-col gap-1 w-min border-2 border-gray-200">
@@ -45,7 +53,7 @@
                     <Player current={true} />
                 {:else if isSet(map, HEIGHT - 1 - col, row + 1)}
                     <Wall />
-                {:else if isSet(testPlayers, HEIGHT - 1 - col, WIDTH - row)}
+                {:else if isOtherPlayerAtPosition(col, row)}
                     <Player current={false} />
                 {:else}
                     <div class="w-8 aspect-square">

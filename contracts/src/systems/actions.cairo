@@ -36,8 +36,6 @@ mod actions {
             // Retrieve the player's current position from the world.
             let mut player = get!(world, contract_address, (Player));
 
-            assert(player.run_id == 0, 'Player already in a run');
-
             // Get the room list and current room
             let mut room_list = get!(world, 0, (RoomList));
             let mut room_id = *room_list.room_max_id_for_level[0];
