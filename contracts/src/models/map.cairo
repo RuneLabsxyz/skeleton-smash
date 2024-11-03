@@ -47,7 +47,7 @@ struct Room {
 impl RoomImpl of RoomTrait {
     fn new(room_id: u32, seed: felt252, level: u32) -> Room {
         let steps: u16 = 300;
-        let mut map = MapTrait::new_random_walk(WIDTH, HEIGHT, steps, 813859603612189432131876132874719238712037164087829473518273498271623874091);
+        let mut map = MapTrait::new_random_walk(WIDTH, HEIGHT, steps, seed);
 
         map.open_with_corridor(1, 1);
         map.open_with_corridor(2, 1);
