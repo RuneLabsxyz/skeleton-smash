@@ -56,10 +56,10 @@
     {#each new Array(18) as _, col}
         <div class="flex flex-row gap-1">
             {#each new Array(14) as _, row}
-                {#if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
-                    <Player current={true} />
-                {:else if isSet(map, HEIGHT - 1 - col, row + 1)}
+                {#if isSet(map, HEIGHT - 1 - col, row + 1)}
                     <Wall />
+                {:else if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
+                    <Player current={true} />
                 {:else if isOtherPlayerAtPosition(col, row)}
                     <Player current={false} />
                 {:else}
