@@ -1,10 +1,10 @@
 <script lang="ts">
     import StartBanner from "./ui/startBanner.svelte";
-    import { currentPlayerRun } from "$lib/api/run";
     import { type Run } from "$src/dojo/models.gen";
-    import Background from "./ui/Background.svelte";
     import Level from "./ui/Level.svelte";
     import DeadBanner from "./ui/deadbanner.svelte";
+    import Seppuku from "./ui/seppuku.svelte";
+
     let { run, isDead } = $props<{
         run: Run | null;
         isDead: boolean;
@@ -18,6 +18,7 @@
     {/if}
     {#if run}
         <Level level={run.level} />
+        <Seppuku />
     {/if}
     {#if isDead}
         <DeadBanner />

@@ -6,6 +6,7 @@ trait IActions {
     fn initialize(ref world: IWorldDispatcher);
     fn move(ref world: IWorldDispatcher, direction: Direction, seed: felt252);
     fn first_move(ref world: IWorldDispatcher, chosen_column: u8, seed: felt252);
+    fn seppuku(ref world: IWorldDispatcher);
 }
 
 #[dojo::contract]
@@ -174,6 +175,21 @@ mod actions {
             }
 
             set!(world, (position, run, room, player));
+        }
+        fn seppuku(ref world: IWorldDispatcher) {
+            let contract_address = get_caller_address();
+            
+            let mut player = get!(world, contract_address, (Player));
+            assert(player.run_id != 0, 'Player is not in a run');
+
+            let mut run = get!(world, player.run_id, (Run));
+            assert(run.is_dead == false, 'Player is already dead');
+
+            run.is_dead = true;
+            player.run_id = 0;
+            player.in_run = false;
+            player.run_history.append(player.run_id);
+            set!(world, (run, player));
         }
     }
 }

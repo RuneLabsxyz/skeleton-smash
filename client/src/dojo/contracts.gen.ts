@@ -92,7 +92,25 @@ export async function setupWorld(provider: DojoProvider) {
                 throw error;
             }
         };
-            
+
+
+        // Call the `seppuku` system with the specified Account and calldata
+        const seppuku = async (props: { account: Account }) => {
+            try {
+                return await provider.execute(
+                    props.account,
+                    {
+                        contractName: contract_name,
+                        entrypoint: "seppuku",
+                        calldata: [],
+                    },
+                    "skeleton_smash"
+                );
+            } catch (error) {
+                console.error("Error executing seppuku:", error);
+                throw error;
+            }
+        };
 
     
         // Call the `world` system with the specified Account and calldata
@@ -115,7 +133,7 @@ export async function setupWorld(provider: DojoProvider) {
             
 
         return {
-            spawn, initialize, move, first_move, world
+            spawn, initialize, move, first_move, seppuku, world
         };
     }
 

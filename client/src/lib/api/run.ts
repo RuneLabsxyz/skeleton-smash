@@ -74,6 +74,19 @@ export async function doMove(direction: Direction) {
     }
 }
 
+export async function commitSeppuku() {
+    // Get the context 
+    const [account, { client }] = await getDojoContext();
+
+    try {
+        await client.actions.seppuku({
+            account,
+        });
+    } catch (err) {
+        console.log("An error occurred while seppuku: ", err)
+    }
+}
+
 export async function Run(runId: number) {
     // We consider they are unchangeable
     const { torii, clientComponents } = await getDojo();
