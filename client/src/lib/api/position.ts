@@ -1,8 +1,8 @@
 import { componentValueStore } from "$src/dojo/componentValueStore";
 import type { Position as PositionTy } from "$src/dojo/models.gen";
-import { getDojo} from "$src/stores/dojoStores";
-import { derived, type Readable } from "svelte/store";
-import { currentPlayerRun } from "./run";
+import { getDojo } from "$src/stores/dojoStores";
+import { derived, type Readable, get as storeGet } from "svelte/store";
+import { currentPlayerRun, isMovePending } from "./run";
 import { currentPlayerRoom } from "./room";
 import get from "./utils";
 
@@ -15,12 +15,16 @@ export async function Position(runId: number): Promise<Readable<PositionTy | nul
     return componentValueStore(clientComponents.Position, valueHash);
 }
 
-export const currentPlayerPosition = derived([currentPlayerRun], ([playerRun], set) => {
+export const currentPlayerPosition: Readable<PositionTy | null> = derived([currentPlayerRun], ([playerRun], set) => {
     if (playerRun?.run_id == undefined) {
         return;
     }
 
     get(Position(playerRun?.run_id as number)).subscribe(newVal => {
+        if (storeGet(isMovePending)) {
+            isMovePending.set(false);
+        }
+
         set(newVal);
     })
 })

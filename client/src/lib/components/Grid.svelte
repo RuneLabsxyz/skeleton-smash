@@ -3,42 +3,27 @@
     import { testPlayers } from "../test";
     import Wall from "./cell/Wall.svelte";
     import Player from "./cell/Player.svelte";
-    import {
-        playerPosition,
-        playerStartPosition,
-        handleKeydown,
-    } from "./players";
+    import { playerStartPosition, handleKeydown } from "./players";
     import { onMount } from "svelte";
     import { type Felt } from "$lib/logic/feltUtils";
-    import { type Run, type Room } from "$src/dojo/models.gen";
+    import { type Run, type Room, type Position } from "$src/dojo/models.gen";
     import {
         currentPlayerPosition,
         otherPlayerPositions,
     } from "$lib/api/position";
+    import { currentPlayerRun, isMovePending } from "$lib/api/run";
+    import { currentPlayer } from "$lib/api/player";
 
-    let playerStart = $derived($playerStartPosition);
-
-    currentPlayerPosition.subscribe((e: any) => {
-        if (e) {
-            playerPosition.set(Number(e.pos));
-        }
-    });
-
-    let { map, run, room } = $props<{
+    let { map, run, room, shake } = $props<{
         map: Felt | null;
         run: Run | null;
+        shake: boolean;
     }>();
 
-    $effect(() => {
-        if (run.move_count == 0) {
-            playerStartPosition.set(7);
-        } else {
-            playerStartPosition.set(null);
-        }
-    });
-
     onMount(() => {
-        window.addEventListener("keydown", handleKeydown);
+        const unsubscribe = window.addEventListener("keydown", handleKeydown);
+
+        return unsubscribe;
     });
 
     function isOtherPlayerAtPosition(col: number, row: number): boolean {
@@ -52,29 +37,48 @@
     }
 </script>
 
-<div class="flex flex-col gap-1 w-min border-2 border-gray-200">
+<div
+    class={"flex flex-col gap-1 w-min border-2 border-gray-200 game-grid relative isolate " +
+        (shake ? "shake shake-constant" : "")}
+>
+    {#if ($currentPlayerRun?.move_count as number) > 0 || $isMovePending}
+        <Player current={true} position={$currentPlayerPosition} />
+    {/if}
+
+    {#each Object.entries(($otherPlayerPositions as Record<string, Position> | null) ?? {}) as pos}
+        {#if Number(pos[0]) !== $currentPlayerRun?.run_id}
+            <Player current={false} position={pos[1]} />
+        {/if}
+    {/each}
+
     {#each new Array(18) as _, col}
         <div class="flex flex-row gap-1">
             {#each new Array(14) as _, row}
                 {#if isSet(map, HEIGHT - 1 - col, row + 1)}
                     <Wall />
-                {:else if $playerPosition === (HEIGHT - 1 - col) * WIDTH + row}
-                    <Player current={true} />
-                {:else if isOtherPlayerAtPosition(col, row)}
-                    <Player current={false} />
                 {:else}
-                    <div class="w-8 aspect-square"></div>
+                    <div class="w-[var(--grid-width)] aspect-square"></div>
                 {/if}
             {/each}
         </div>
     {/each}
-    <div class="h-8 bg-gray-200 flex items-center justify-center relative">
+    <div class="h-[var(--grid-width)] bg-gray-200 flex items-center justify-center relative">
         SAFE ZONE
-        {#if playerStart !== null}
+        {#if $currentPlayerPosition === null}
             <div
-                class="w-8 aspect-square bg-red-500"
-                style="position: absolute; left: calc({playerStart} * 2.25rem);"
+                class="w-[var(--grid-width)] aspect-square bg-red-500"
+                style="position: absolute; left: calc({$playerStartPosition} * var(--grid-width));"
             ></div>
         {/if}
     </div>
 </div>
+
+<style>
+    :root {
+        --grid-width: 2.5rem;
+    }
+    .game-grid {
+        background: url("/assets/bg.png");
+        background-size: var(--grid-width);
+    }
+</style>

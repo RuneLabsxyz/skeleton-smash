@@ -1,11 +1,10 @@
-import { writable } from "svelte/store";
+import { derived, writable, type Readable } from "svelte/store";
 import { get } from "svelte/store";
 import { fakeMoveRequest } from "../test";
-import { doFirstMove, doMove } from "$lib/api/run";
+import { currentPlayerRun, doFirstMove, doMove, isMovePending } from "$lib/api/run";
+import { currentPlayerPosition } from "$lib/api/position";
 
-
-export let playerPosition = writable<number | null>(null);
-export let playerStartPosition = writable<number | null>(null);
+export let playerStartPosition = writable<number | null>(7);
 
 
 export let moveRequested = writable(false);
@@ -36,7 +35,12 @@ export async function handleKeydown(event: KeyboardEvent) {
 }
 
 async function movePlayer(direction: Direction) {
-    if (get(playerStartPosition) !== null) {
+    if (get(isMovePending)) {
+        console.log("Move is pending!")
+        return;
+    }
+
+    if (get(currentPlayerPosition) === null) {
         await spawnPlayer(direction);
         return;
     }
@@ -60,5 +64,5 @@ async function spawnPlayer(direction: Direction) {
         playerStartPosition.set(Math.max(0, startPos - 1));
     } else if (direction === Direction.North) {
         doFirstMove(startPos);
-    } 
+    }
 }
