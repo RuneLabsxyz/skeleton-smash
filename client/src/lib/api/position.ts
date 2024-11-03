@@ -1,7 +1,7 @@
 import { componentValueStore } from "$src/dojo/componentValueStore";
-import type { Player, Position as PositionTy } from "$src/dojo/models.gen";
-import { getDojo, getDojoContext } from "$src/stores/dojoStores";
-import { derived, readable, writable, type Readable, type Writable } from "svelte/store";
+import type { Position as PositionTy } from "$src/dojo/models.gen";
+import { getDojo} from "$src/stores/dojoStores";
+import { derived, type Readable } from "svelte/store";
 import { currentPlayerRun } from "./run";
 import { currentPlayerRoom } from "./room";
 import get from "./utils";
