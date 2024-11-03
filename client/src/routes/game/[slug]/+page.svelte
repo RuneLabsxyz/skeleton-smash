@@ -12,6 +12,7 @@
     let run: Run | null = $state(null);
     let room: Room | null = $state(null);
     let isDead = $state(false);
+    let currentLevel = $state(0);
 
     currentPlayer.subscribe((e) => {
         if (e?.run_id == 0) {
@@ -27,6 +28,7 @@
 
     currentPlayerRun.subscribe((e) => {
         run = e;
+        currentLevel = Number(e?.level ?? 0);
         if (e) {
             const { pathname } = window.location;
             const currentRunId = pathname.split('/').pop();
@@ -37,7 +39,6 @@
         }
     });
 
-    let currentLevel = $state(0);
 </script>
 
 <div class="w-screen flex h-screen justify-center items-center flex-col">
@@ -46,12 +47,5 @@
         <Grid map={room_map} {run}></Grid>
     {/if}
     <Ui {run} {isDead} />
-    <button
-        class="z-10"
-        onclick={() => {
-            currentLevel++;
-            console.log("currentLevel:", currentLevel);
-        }}>Test</button
-    >
     <Background level={currentLevel} />
 </div>
