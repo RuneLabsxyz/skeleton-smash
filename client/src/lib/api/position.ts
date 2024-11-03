@@ -3,6 +3,7 @@ import type { Player, Position as PositionTy } from "$src/dojo/models.gen";
 import { getDojo, getDojoContext } from "$src/stores/dojoStores";
 import { derived, readable, writable, type Readable, type Writable } from "svelte/store";
 import { currentPlayerRun } from "./run";
+import { currentPlayerRoom } from "./room";
 import get from "./utils";
 
 export async function Position(runId: number): Promise<Readable<PositionTy | null>> {
@@ -23,3 +24,30 @@ export const currentPlayerPosition = derived([currentPlayerRun], ([playerRun], s
         set(newVal);
     })
 })
+
+export const otherPlayerPositions = derived([currentPlayerRoom], ([room], set) => {
+    if (room == null) {
+        set(null);
+        return;
+    }
+
+    const positions: Record<number, PositionTy> = {};
+    const unsubscribes: (() => void)[] = [];
+
+    for (const run_id of room.run_ids) {
+        (async () => {
+            const positionStore = await Position(Number(run_id));
+            const unsubscribe = positionStore.subscribe(pos => {
+                if (pos !== undefined && pos !== null) {
+                    positions[Number(run_id)] = pos;
+                    set({ ...positions });
+                }
+            });
+            unsubscribes.push(unsubscribe);
+        })();
+    }
+
+    return () => {
+        unsubscribes.forEach(unsubscribe => unsubscribe());
+    };
+});

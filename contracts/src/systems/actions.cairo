@@ -36,12 +36,12 @@ mod actions {
             // Retrieve the player's current position from the world.
             let mut player = get!(world, contract_address, (Player));
 
-            assert(player.run_id == 0, 'Player already in a run');
-
             // Get the room list and current room
             let mut room_list = get!(world, 0, (RoomList));
             let mut room_id = *room_list.room_max_id_for_level[0];
             let mut room = get!(world, room_id, (Room));
+
+            assert(player.in_run == false, 'Player already in a run');
 
             // If current room is full, create a new one
             if RoomTrait::is_full(ref room) {
@@ -52,7 +52,7 @@ mod actions {
                 room = RoomTrait::new(room_id, seed, 0);
             }
 
-            let run_id = world.uuid();
+            let run_id = world.uuid() + 1;
             room = RoomTrait::add_player(ref room, run_id);
             let run = RunTrait::new(run_id, contract_address, 0, room.room_id);
 
@@ -67,6 +67,8 @@ mod actions {
             let mut run = get!(world, player.run_id, (Run));
             let mut room = get!(world, run.room_id, (Room));
             let mut position = get!(world, player.run_id, (Position));
+
+            assert(run.is_dead == false, 'Player is dead');
 
             //update player bitmap and move player
             room.player_positions = clear_player_bitmap(room.player_positions, position.pos);
