@@ -7,23 +7,22 @@
     import { onMount } from "svelte";
     import { type Felt } from "$lib/logic/feltUtils";
     import { type Run, type Room, type Position } from "$src/dojo/models.gen";
+    import Background from "$lib/components/ui/Background.svelte";
     import {
         currentPlayerPosition,
         otherPlayerPositions,
         type PositionStatus,
     } from "$lib/api/position";
       import { currentPlayerRun, isMovePending, Run as RunStore } from "$lib/api/run";
-    import { currentPlayer } from "$lib/api/player";
-    import { get } from "svelte/store";
-    import getStore from "$lib/api/utils";
     import Bones from "./cell/Bones.svelte";
     import Trap from "./cell/Trap.svelte";
   
-    let { map, run, room, shake, death_walls } = $props<{
+    let { map, run, room, shake, death_walls, level } = $props<{
         map: Felt | null;
         run: Run | null;
         shake: boolean;
         death_walls: Felt | null;
+        level: number;
     }>();
 
     onMount(() => {
@@ -34,8 +33,9 @@
 </script>
 
 <div
-    class={"flex flex-col gap-1 w-min border-2 border-gray-200 game-grid relative isolate " +
+    class={"flex flex-col gap-1 w-min border-2 border-gray-200 relative isolate game-grid " +
         (shake ? "shake shake-constant" : "")}
+    style="background-position: 50% calc(100% - ({Math.min(level, 9)} * 11.1%));"
 >
     {#if ($currentPlayerRun?.move_count as number) > 0 || $isMovePending}
         <Player current={true} position={$currentPlayerPosition} />
@@ -86,8 +86,8 @@
         --grid-width: 2.5rem;
     }
     .game-grid {
-        background: url("/assets/bg.png");
-        background-size: var(--grid-width);
+        background: url("/assets/full_background.jpg");
+        background-size: 100% auto;
     }
 
     .safe-grid {

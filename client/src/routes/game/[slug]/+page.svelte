@@ -54,9 +54,9 @@
 <div class="w-screen flex h-screen justify-center items-center flex-col">
     <h1 class="font-bold text-5xl mb-5 font-halloween text-white">Skeleton Bash</h1>
     {#if room_map}
-        <Grid map={room_map} {run} {death_walls} shake={$isMovePending}></Grid>
+        <Grid map={room_map} {run} {death_walls} shake={$isMovePending} level={currentLevel}></Grid>
     {/if}
 
     <Ui {run} {isDead} />
-    <Background level={currentLevel} />
+    <Background />
 </div>
