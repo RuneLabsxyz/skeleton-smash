@@ -54,7 +54,7 @@
 </script>
 
 <div
-    class="w-screen flex h-screen justify-center items-center flex-col touch-none overscroll-none"
+    class="w-screen flex h-screen justify-center items-center flex-col touch-none overscroll-none overflow-clip"
 >
     <h1
         class="font-bold text-5xl mb-5 font-halloween text-white md:mt-0 mt-auto"

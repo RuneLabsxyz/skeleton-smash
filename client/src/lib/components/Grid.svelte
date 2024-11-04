@@ -49,7 +49,7 @@
     style="background-position: 50% calc(100% - ({Math.min(level, 9)} * 11.1%));"
 >
     {#if ($currentPlayerRun?.move_count as number) > 0 || $isMovePending}
-        <Player current={true} position={$currentPlayerPosition} />
+        <Player current={true} position={$currentPlayerPosition} isMoving={$isMovePending ?? false} />
     {/if}
 
     {#each Object.entries(($otherPlayerPositions as Record<string, PositionStatus> | null) ?? {}) as pos}
