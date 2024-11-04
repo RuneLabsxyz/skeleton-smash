@@ -1,5 +1,8 @@
 <script lang="ts">
     import { currentPlayerRun } from "$lib/api/run";
+    const { run } = $props<{
+        run: Run | null;
+    }>();
 </script>
 
 <div class="w-full h-1/4 bg-red-800/50 flex items-center justify-center">
@@ -16,7 +19,7 @@
         <div>
             You died on floor
             <span class="font-bold">
-                {$currentPlayerRun?.level}
+                {run?.level}
             </span>
         </div>
         <button
