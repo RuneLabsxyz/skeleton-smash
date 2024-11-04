@@ -5,9 +5,10 @@
     import { SvelteURL } from "svelte/reactivity";
     import { get, type Readable } from "svelte/store";
 
-    let { current, position } = $props<{
+    let { current, position, isMoving } = $props<{
         current: boolean;
         position: Position | null;
+        isMoving: boolean | null;
     }>();
 
     let previousValue = $state(null);
@@ -19,7 +20,7 @@
     });
 
     let posStore: [number, number] = $derived(
-        fromOffset((position?.pos ?? previousValue ?? -1) as number),
+        fromOffset((position?.pos ?? previousValue) as number),
     );
 
     let pos = $state(tweened<[number, number] | null>(null));
@@ -33,7 +34,8 @@
 
 {#if $pos !== null}
     <div
-        class="w-[var(--grid-width)] aspect-square flex justify-center items-center align-middle absolute z-30"
+        class={"w-[var(--grid-width)] aspect-square flex justify-center items-center align-middle absolute z-30" +
+            (isMoving ? " shake shake-constant" : "")}
         style={`bottom: calc((var(--grid-width) + 0.25rem) * ${$pos[0] + 1}); left: calc((var(--grid-width) + 0.25rem) * ${$pos[1]})`}
     >
         {#if current}
