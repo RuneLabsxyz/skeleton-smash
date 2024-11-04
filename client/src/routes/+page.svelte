@@ -28,14 +28,6 @@
     background-color: #000;
   }
 
-  .title {
-    font-size: 64px;
-    color: #fff;
-    font-weight: bold;
-    margin-bottom: 50px;
-    animation: glow 1.5s ease-in-out infinite alternate;
-  }
-
   .start-button {
     padding: 15px 40px;
     font-size: 24px;

@@ -3,9 +3,21 @@
 </script>
 
 <div
-    class="absolute top-0 left-0 text-xl font-bold bg rounded-br-lg pt-4 pl-4 pr-4 pb-4"
+    class="absolute top-4 left-4 text-xl font-bold flex border-2 p-2 bg-[#4F6660] border-black"
 >
-    Level {level}
+    <img
+        src="/assets/level.svg"
+        alt="Level icon"
+        class="w-8 ml-2"
+        style="image-rendering: pixelated;"
+    />
+
+    <div
+        class=" text-white px-4 py-2 rounded-md"
+        contextmenu="Commit Seppuku"
+    >
+        Level {level}
+    </div>
 </div>
 
 <style>
