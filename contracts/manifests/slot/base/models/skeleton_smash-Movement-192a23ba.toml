@@ -1,0 +1,17 @@
+kind = "DojoModel"
+class_hash = "0x26ce9155befef69bf54a9195fc854f0d11d196c9e3c1fde64438cb4a17c1e9"
+original_class_hash = "0x26ce9155befef69bf54a9195fc854f0d11d196c9e3c1fde64438cb4a17c1e9"
+abi = "manifests/slot/base/abis/models/skeleton_smash-Movement-192a23ba.json"
+tag = "skeleton_smash-Movement"
+qualified_path = "skeleton_smash::models::player::movement"
+manifest_name = "skeleton_smash-Movement-192a23ba"
+
+[[members]]
+name = "run_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "direction"
+type = "Direction"
+key = false

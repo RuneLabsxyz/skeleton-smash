@@ -140,15 +140,7 @@
         "type": "()"
       },
       {
-        "name": "NorthWest",
-        "type": "()"
-      },
-      {
         "name": "North",
-        "type": "()"
-      },
-      {
-        "name": "NorthEast",
         "type": "()"
       },
       {
@@ -156,15 +148,7 @@
         "type": "()"
       },
       {
-        "name": "SouthEast",
-        "type": "()"
-      },
-      {
         "name": "South",
-        "type": "()"
-      },
-      {
-        "name": "SouthWest",
         "type": "()"
       },
       {
@@ -225,6 +209,13 @@
             "type": "core::felt252"
           }
         ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "seppuku",
+        "inputs": [],
         "outputs": [],
         "state_mutability": "external"
       }
