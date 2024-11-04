@@ -3,8 +3,13 @@
     import { testPlayers } from "../test";
     import Wall from "./cell/Wall.svelte";
     import Player from "./cell/Player.svelte";
-    import { playerStartPosition, handleKeydown } from "./players";
-    import { onMount } from "svelte";
+    import {
+        playerStartPosition,
+        handleKeydown,
+        handleTouchStart,
+        handleTouchEnd,
+    } from "./players";
+    import { onMount, onDestroy } from "svelte";
     import { type Felt } from "$lib/logic/feltUtils";
     import { type Run, type Room, type Position } from "$src/dojo/models.gen";
     import Background from "$lib/components/ui/Background.svelte";
@@ -13,10 +18,10 @@
         otherPlayerPositions,
         type PositionStatus,
     } from "$lib/api/position";
-      import { currentPlayerRun, isMovePending, Run as RunStore } from "$lib/api/run";
+    import { currentPlayerRun, isMovePending, Run as RunStore } from "$lib/api/run";
     import Bones from "./cell/Bones.svelte";
     import Trap from "./cell/Trap.svelte";
-  
+
     let { map, run, room, shake, death_walls, level } = $props<{
         map: Felt | null;
         run: Run | null;
@@ -26,11 +31,18 @@
     }>();
 
     onMount(() => {
-        const unsubscribe = window.addEventListener("keydown", handleKeydown);
+        window.addEventListener("keydown", handleKeydown);
+        window.addEventListener("touchstart", handleTouchStart);
+        window.addEventListener("touchend", handleTouchEnd);
 
-        return unsubscribe;
+        return () => {
+            window.removeEventListener("keydown", handleKeydown);
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchend", handleTouchEnd);
+        };
     });
 </script>
+
 
 <div
     class="flex flex-col gap-1 w-min border-2 border-gray-200 relative isolate game-grid" 
