@@ -19,10 +19,3 @@
         Level {level}
     </div>
 </div>
-
-<style>
-    .bg {
-        background: url("/assets/bg.png");
-        background-size: var(--grid-width);
-    }
-</style>
