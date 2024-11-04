@@ -9,7 +9,6 @@
         run: Run | null;
         isDead: boolean;
     }>();
-
 </script>
 
 <div class="absolute top-0 left-0 w-full h-full flex items-center">
@@ -21,6 +20,6 @@
         <Seppuku />
     {/if}
     {#if isDead}
-        <DeadBanner />
+        <DeadBanner {run} />
     {/if}
 </div>

@@ -3,10 +3,15 @@
     import Ui from "$lib/components/Ui.svelte";
     import { currentPlayerRoom } from "$lib/api/room";
     import { currentPlayer } from "$lib/api/player";
-    import { currentPlayerRun, isMovePending } from "$lib/api/run";
+    import {
+        currentPlayerRun,
+        isMovePending,
+        Run as RunStore,
+    } from "$lib/api/run";
     import { type Run, type Room } from "$src/dojo/models.gen";
     import { type Felt } from "$lib/logic/feltUtils";
     import Background from "$lib/components/ui/Background.svelte";
+    import { get } from "svelte/store";
 
     let room_map: Felt | null = $state(null);
     let death_walls: Felt | null = $state(null);
@@ -38,14 +43,20 @@
         }
     });
 
-    currentPlayerRun.subscribe((e) => {
-        run = e;
-        currentLevel = Number(e?.level ?? 0);
+    currentPlayerRun.subscribe(async (e) => {
+        const { pathname } = window.location;
+        const currentRunId = pathname.split("/").pop();
+
+        if (e == null) {
+            // Handle the case where runs are not enabled
+            run = get(await RunStore(Number(pathname.split("/").pop())));
+        } else {
+            run = e;
+        }
+
+        currentLevel = Number(run?.level ?? 0);
 
         if (e) {
-            const { pathname } = window.location;
-            const currentRunId = pathname.split("/").pop();
-
             if (currentRunId !== String(e.run_id)) {
                 window.history.replaceState({}, "", `/game/${e.run_id}`);
             }
