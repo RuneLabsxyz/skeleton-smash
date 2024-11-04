@@ -4,14 +4,14 @@ class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
 original_class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
 abi = "manifests/slot/deployment/abis/dojo-world.json"
 address = "0x2a9b2d8dc43c75312bf14df3f83fcd68b2d4fd6945d91acccb6e9a669e56fad"
-transaction_hash = "0x5f499442f691c27f426679311179b6d8fc345166a466e2e752a704048ec8999"
+transaction_hash = "0x77e504b5e7b6d66b38e9a7598766d92300b3ff53696960082a45738f6ac7d5b"
 block_number = 3
 seed = "skeleton_smash"
 manifest_name = "dojo-world"
 
 [world.metadata]
 profile_name = "slot"
-rpc_url = "https://api.cartridge.gg/x/skelton-smash/katana"
+rpc_url = "https://api.cartridge.gg/x/skeleton-smash/katana"
 
 [base]
 kind = "Class"
@@ -24,8 +24,8 @@ manifest_name = "dojo-base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x64a81532dec0aae2c41da0d4556b3727ab13231b77a4defdc3f480ac1dae8eb"
-class_hash = "0x5de2a420890f83b257fe7759adeffcb78405b4f611364bf15f274fb9c55e222"
-original_class_hash = "0x5de2a420890f83b257fe7759adeffcb78405b4f611364bf15f274fb9c55e222"
+class_hash = "0x489a383d915746b8bdbda4c57ed0b290e33bb5323f3bf89c85099ddc488af2f"
+original_class_hash = "0x489a383d915746b8bdbda4c57ed0b290e33bb5323f3bf89c85099ddc488af2f"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/slot/deployment/abis/contracts/skeleton_smash-actions-7ca74759.json"
 reads = []
@@ -43,13 +43,33 @@ systems = [
     "spawn",
     "move",
     "first_move",
+    "seppuku",
 ]
 manifest_name = "skeleton_smash-actions-7ca74759"
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x2e11ba1cc6da651519efc614a43b6da3940790e948f5b7fb396600b057b7b98"
-original_class_hash = "0x2e11ba1cc6da651519efc614a43b6da3940790e948f5b7fb396600b057b7b98"
+class_hash = "0x26ce9155befef69bf54a9195fc854f0d11d196c9e3c1fde64438cb4a17c1e9"
+original_class_hash = "0x26ce9155befef69bf54a9195fc854f0d11d196c9e3c1fde64438cb4a17c1e9"
+abi = "manifests/slot/deployment/abis/models/skeleton_smash-Movement-192a23ba.json"
+tag = "skeleton_smash-Movement"
+qualified_path = "skeleton_smash::models::player::movement"
+manifest_name = "skeleton_smash-Movement-192a23ba"
+
+[[models.members]]
+name = "run_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "direction"
+type = "Direction"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x29672b150d63723fb9be7e1214447bbce4eb0ba120f364ee4dc60e391843896"
+original_class_hash = "0x29672b150d63723fb9be7e1214447bbce4eb0ba120f364ee4dc60e391843896"
 abi = "manifests/slot/deployment/abis/models/skeleton_smash-Player-2b480015.json"
 tag = "skeleton_smash-Player"
 qualified_path = "skeleton_smash::models::player::player"
@@ -68,6 +88,11 @@ key = false
 [[models.members]]
 name = "run_history"
 type = "Array<u32>"
+key = false
+
+[[models.members]]
+name = "in_run"
+type = "bool"
 key = false
 
 [[models]]
@@ -91,8 +116,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x36873160f677497c6e7571712ec2ab6ea4c602fff8936d5ec7df902f6a1a910"
-original_class_hash = "0x36873160f677497c6e7571712ec2ab6ea4c602fff8936d5ec7df902f6a1a910"
+class_hash = "0x207647d2dd568ba93051668b56329bf573b9cd19ea21746aebe9f661ff1bf18"
+original_class_hash = "0x207647d2dd568ba93051668b56329bf573b9cd19ea21746aebe9f661ff1bf18"
 abi = "manifests/slot/deployment/abis/models/skeleton_smash-Room-164aae80.json"
 tag = "skeleton_smash-Room"
 qualified_path = "skeleton_smash::models::map::room"
@@ -105,6 +130,11 @@ key = true
 
 [[models.members]]
 name = "map"
+type = "felt252"
+key = false
+
+[[models.members]]
+name = "death_walls"
 type = "felt252"
 key = false
 

@@ -2,10 +2,10 @@ use dojo::world::IWorldDispatcher;
 use skeleton_smash::types::direction::Direction;
 use skeleton_smash::helpers::bitmap::{pow2_const};
 use skeleton_smash::consts::{WIDTH, HEIGHT};
-use skeleton_smash::helpers::check_kill::{kill_player};
+use skeleton_smash::helpers::check_kill::{kill_player, kill_trap};
 
 // this function will move the player in the room and return the new position
-fn move_player(direction: Direction, map: felt252, player_positions: felt252, mut current_position: u8, room_id: u32, world: IWorldDispatcher) -> (u8, bool) {
+fn move_player(direction: Direction, map: felt252, player_positions: felt252, death_walls: felt252, mut current_position: u8, room_id: u32, world: IWorldDispatcher) -> (u8, bool) {
     let mut is_exit = false;
     
     // Keep moving until we hit an edge or obstacle
@@ -14,6 +14,13 @@ fn move_player(direction: Direction, map: felt252, player_positions: felt252, mu
         if check_out_of_bounds(WIDTH, HEIGHT, current_position, direction) {
             break; 
         }
+
+        // Check if next position is blocked in death_walls
+        if check_blocked(death_walls, WIDTH, HEIGHT, current_position, direction) {
+            kill_trap(world);
+            break;
+        }
+
         // Check if next position is blocked in map
         if !check_blocked(map, WIDTH, HEIGHT, current_position, direction) {
             break; 

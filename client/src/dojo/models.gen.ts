@@ -95,6 +95,7 @@ export const PositionDefinition = {
 export interface Room {
     room_id: Number;
     map: BigInt;
+    death_walls: BigInt;
     player_positions: BigInt;
     level: Number;
     run_ids: Number[];
@@ -103,6 +104,7 @@ export interface Room {
 export const RoomDefinition = {
     room_id: RecsType.Number,
     map: RecsType.BigInt,
+    death_walls: RecsType.BigInt,
     player_positions: RecsType.BigInt,
     level: RecsType.Number,
     run_ids: RecsType.NumberArray,
@@ -212,6 +214,7 @@ export function defineContractComponents(world: World) {
                 {
                     room_id: RecsType.Number,
                     map: RecsType.BigInt,
+                    death_walls: RecsType.BigInt,
                     player_positions: RecsType.BigInt,
                     level: RecsType.Number,
                     run_ids: RecsType.NumberArray,
@@ -220,7 +223,7 @@ export function defineContractComponents(world: World) {
                     metadata: {
                         namespace: "skeleton_smash",
                         name: "Room",
-                        types: ["u32", "felt252", "felt252", "u32", "array"],
+                        types: ["u32", "felt252", "felt252", "felt252", "u32", "array"],
                         customTypes: [],
                     },
                 }
