@@ -33,8 +33,7 @@
 </script>
 
 <div
-    class={"flex flex-col gap-1 w-min border-2 border-gray-200 relative isolate game-grid " +
-        (shake ? "shake shake-constant" : "")}
+    class="flex flex-col gap-1 w-min border-2 border-gray-200 relative isolate game-grid" 
     style="background-position: 50% calc(100% - ({Math.min(level, 9)} * 11.1%));"
 >
     {#if ($currentPlayerRun?.move_count as number) > 0 || $isMovePending}
