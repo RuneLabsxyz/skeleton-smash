@@ -94,7 +94,13 @@
 
 <style>
     :root {
-        --grid-width: 2.5rem;
+        --grid-width: calc((100vw - (13 * 0.25rem)) / 14); /* Adjust for gaps between cells */
+    }
+    @media (min-width: 768px) {
+        /* For larger screens, you might want to set a maximum grid width */
+        :root {
+            --grid-width: 2.5rem;
+        }
     }
     .game-grid {
         background: url("/assets/full_background.jpg");
