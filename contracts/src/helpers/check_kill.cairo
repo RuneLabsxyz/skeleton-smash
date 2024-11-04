@@ -5,7 +5,6 @@ use skeleton_smash::models::map::{Room};
 use starknet::{ContractAddress, get_caller_address};
 
 fn kill_player(kill_player_position: u8, room_id: u32, world: IWorldDispatcher) {
-
     let mut room = get!(world, room_id, (Room));
 
     let mut i = 0;
@@ -41,7 +40,6 @@ fn kill_player(kill_player_position: u8, room_id: u32, world: IWorldDispatcher) 
 }
 
 fn kill_trap(world: IWorldDispatcher) {
-
     let contract_address = get_caller_address();
 
     let mut player = get!(world, contract_address, (Player));
@@ -53,5 +51,6 @@ fn kill_trap(world: IWorldDispatcher) {
     player.run_id = 0;
     player.in_run = false;
 
-    set!(world, (run, player));
+    set!(world, (run));
+    set!(world, (player));
 }
