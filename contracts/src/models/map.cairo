@@ -89,7 +89,7 @@ impl RoomImpl of RoomTrait {
         Room { room_id: 0, map: 0, death_walls: 0, player_positions: 0, level: 0, run_ids: ArrayTrait::new() }
     }
     fn is_full(ref self: Room) -> bool {
-        self.run_ids.len() == MAX_PLAYERS
+        self.run_ids.len() >= MAX_PLAYERS
     }
     fn does_room_exist(ref self: Room) -> bool {
         self.map != 0
